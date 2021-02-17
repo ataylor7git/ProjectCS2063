@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
-import static ca.unb.mobiledev.projectcs2063.R.menu.fragment_user;
+import static ca.unb.mobiledev.projectcs2063.R.layout.fragment_user;
 
 public class UserFragment extends Fragment{
     private final static String TAG = " INFO User Fragment";
