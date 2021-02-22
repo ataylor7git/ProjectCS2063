@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_steps"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#242526"
+    android:rotationX="0"
+    android:textAlignment="center"
+    tools:context=".fragment.StepFragment">
+
+    <ImageView
+        android:id="@+id/stepsImageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp" />
+
+    <TextView
+        android:id="@+id/stepsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/stepsImageView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="0dp"
+        android:text="Steps"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/currentStepsTV"
+        android:layout_width="match_parent"
+        android:layout_height="159dp"
+        android:layout_below="@+id/stepProgressBar"
+        android:text="0 / x Steps Today"
+        android:textAlignment="center"
+        android:textSize="24sp" />
+
+    <ProgressBar
+        android:id="@+id/stepProgressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="221dp"
+        android:layout_below="@+id/stepsTitle"
+        android:max="100"
+        android:min="0"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp"
+        android:scaleY="6" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/currentStepsTV">
+
+        <TextView
+            android:id="@+id/goalTV"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Goal: "
+            android:textSize="24sp"/>
+
+        <EditText
+            android:id="@+id/stepGoalTN"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="number" />
+
+    </LinearLayout>
+
+</RelativeLayout>

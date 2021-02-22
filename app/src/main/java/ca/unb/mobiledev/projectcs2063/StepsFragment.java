@@ -1,25 +1,42 @@
 package ca.unb.mobiledev.projectcs2063;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
 import androidx.fragment.app.Fragment;
 
 
 
-import static ca.unb.mobiledev.projectcs2063.R.menu.fragment_steps;
+import static ca.unb.mobiledev.projectcs2063.R.layout.fragment_steps;
 
-public class StepsFragment extends Fragment {
+public class StepsFragment extends Fragment implements SensorEventListener {
     private final static String TAG = "INFO Steps Fragment";
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    private EditText goalInput;
+    private TextView currentStepTV;
+    private ProgressBar progressBar;
+    private int goal = 10000;
+    private int currentSteps = 0;
+    private StepDetector stepDetect;
+    private final double STEPTHRESH = 16;
 
 
     public StepsFragment() {
@@ -37,6 +54,35 @@ public class StepsFragment extends Fragment {
     }
 
     @Override
+    public void onSensorChanged(SensorEvent event) {
+        //Log.i(TAG, "Sensor activated: ");
+        Sensor sensor = event.sensor;
+
+        if (sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            double accelX = event.values[0];
+            double accelY = event.values[1];
+            double accelZ = event.values[2];
+            double atot = Math.sqrt(accelX*accelX + accelY*accelY + accelZ*accelZ);
+            boolean success = stepDetect.detect(atot, STEPTHRESH);
+            if(success) {
+                currentSteps = stepDetect.getStepCount();
+                CharSequence stepsSequence = currentSteps + " / " + goal + " Steps Today";
+
+                currentStepTV.setText(stepsSequence);
+
+                double progress = (double)currentSteps/(double)goal * 100;
+                progressBar.setProgress((int)progress);
+            }
+
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "oncreate method called");
         super.onCreate(savedInstanceState);
@@ -44,13 +90,55 @@ public class StepsFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        stepDetect = new StepDetector();
+        SensorManager sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
+        Sensor sSensor= sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        boolean success = sensorManager.registerListener(this, sSensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
     @SuppressLint("ResourceType")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(fragment_steps, container, false);
+        View rootView = inflater.inflate(fragment_steps, container, false);
+
+        currentStepTV = (TextView)rootView.findViewById(R.id.currentStepsTV);
+
+        progressBar = (ProgressBar)rootView.findViewById(R.id.stepProgressBar);
+
+        goalInput = (EditText)rootView.findViewById(R.id.stepGoalTN);
+        goalInput.addTextChangedListener(new TextWatcher() {
+
+            public void afterTextChanged(Editable s) {
+                //Log.i(TAG, "+" + goalInput.getText().toString() + "+");
+                if(goalInput.getText().toString().equals("") || goalInput.getText().toString().equals("0"))
+                {
+                    goal = 1;
+                }
+                else {
+                    String goalIn = goalInput.getText().toString();
+                    goal = Integer.parseInt(goalIn);
+                }
+
+                CharSequence stepsSequence = currentSteps + " / " + goal + " Steps Today";
+
+                currentStepTV.setText(stepsSequence);
+
+                double progress = (double)currentSteps/(double)goal * 100;
+                progressBar.setProgress((int)progress);
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {Log.i(TAG, "Text Changed Before");}
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {Log.i(TAG, "Text Changed ON");}
+        });
+
+        CharSequence goalSequence = goal + "";
+
+        goalInput.setText(goalSequence);
+
+
+        return rootView;
     }
 
 }
