@@ -18,6 +18,10 @@ public class UserFragment extends Fragment{
     private String mParam1;
     private String mParam2;
 
+    private int waterGoal;
+    private int stepGoal;
+    private View rootView;
+
 
     public UserFragment() {
         Log.i(TAG, "constructer method called");
@@ -49,7 +53,18 @@ public class UserFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(fragment_user, container, false);
+        if (rootView==null) {
+            rootView = inflater.inflate(fragment_user, container, false);
+        }
+        else{
+            ((ViewGroup) rootView.getParent()).removeView(rootView);
+        }
+
+        return rootView;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 }

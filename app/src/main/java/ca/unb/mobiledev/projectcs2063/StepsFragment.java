@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment;
 
 
 import static ca.unb.mobiledev.projectcs2063.R.layout.fragment_steps;
+import static ca.unb.mobiledev.projectcs2063.R.layout.fragment_user;
 
 public class StepsFragment extends Fragment implements SensorEventListener {
     private final static String TAG = "INFO Steps Fragment";
@@ -32,6 +33,7 @@ public class StepsFragment extends Fragment implements SensorEventListener {
     private String mParam2;
     private EditText goalInput;
     private TextView currentStepTV;
+    private TextView progressText;
     private ProgressBar progressBar;
     private int goal = 10000;
     private int currentSteps = 0;
@@ -101,16 +103,18 @@ public class StepsFragment extends Fragment implements SensorEventListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(fragment_steps, container, false);
-
+       // View userView = inflater.inflate(fragment_user, container, false);
         currentStepTV = (TextView)rootView.findViewById(R.id.currentStepsTV);
 
-        progressBar = (ProgressBar)rootView.findViewById(R.id.stepProgressBar);
+        progressBar = (ProgressBar) rootView.findViewById(R.id.stepProgressBar);
+        progressText = (TextView) rootView.findViewById(R.id.progressStepsTV);
 
-        goalInput = (EditText)rootView.findViewById(R.id.stepGoalTN);
+        //goalInput = (EditText) userView.findViewById(R.id.stepGoalTN);
+        goalInput = (EditText) rootView.findViewById(R.id.stepGoalTN);
         goalInput.addTextChangedListener(new TextWatcher() {
 
             public void afterTextChanged(Editable s) {
-                //Log.i(TAG, "+" + goalInput.getText().toString() + "+");
+                Log.i(TAG, "+" + goalInput.getText().toString() + "+");
                 if(goalInput.getText().toString().equals("") || goalInput.getText().toString().equals("0"))
                 {
                     goal = 1;
@@ -126,6 +130,7 @@ public class StepsFragment extends Fragment implements SensorEventListener {
 
                 double progress = (double)currentSteps/(double)goal * 100;
                 progressBar.setProgress((int)progress);
+                progressText.setText((int)progress + "%");
             }
 
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {Log.i(TAG, "Text Changed Before");}

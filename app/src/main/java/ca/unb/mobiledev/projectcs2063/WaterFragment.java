@@ -2,15 +2,16 @@ package ca.unb.mobiledev.projectcs2063;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
-import static ca.unb.mobiledev.projectcs2063.R.menu.*;
 import static ca.unb.mobiledev.projectcs2063.R.layout.*;
 
 public class WaterFragment extends Fragment {
@@ -22,6 +23,11 @@ public class WaterFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private final static String TAG = "INFO Water Fragment";
+
+    private ProgressBar progressCircle;
+    private TextView progressText;
+    private int goal_intake = 2000;
+    private int current_intake = 500;
 
     public WaterFragment() {
         Log.i(TAG, "water fragment constructer called");
@@ -55,8 +61,17 @@ public class WaterFragment extends Fragment {
         Log.i(TAG, "fragment water method about to be called");
 
         // Inflate the layout for this fragment
-        return inflater.inflate(fragment_water, container, false);
+        View rootView = inflater.inflate(fragment_water, container, false);
 
+        progressCircle = (ProgressBar) rootView.findViewById(R.id.waterProgressBar);
+        progressText = (TextView) rootView.findViewById(R.id.progressWaterTV);
+
+        double progress = ((double) current_intake/(double) goal_intake) * 100;
+        progressCircle.setProgress((int)progress);
+        progressText.setText((int)progress + "%");
+        return rootView;
     }
+
+
 
 }

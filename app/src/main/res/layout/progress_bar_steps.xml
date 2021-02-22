@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:showIn="@layout/fragment_steps">
+
+    <ProgressBar
+        android:id="@+id/stepProgressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="250dp"
+        android:layout_height="150dp"
+        android:layout_below="@+id/stepsTitle"
+        android:layout_centerInParent="true"
+        android:indeterminate="false"
+        android:max="100"
+        android:progressDrawable="@drawable/circular"
+        android:secondaryProgress="100" />
+
+    <!--android:progress="@string/progress"
+            android:paddingLeft="25dp"
+        android:paddingRight="25dp"
+        android:scaleY="1"
+        -->
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="0dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/whitecircle" />
+
+    <!-- we will need to make the text into a variable, locate/access it through java and set the
+    progress field above in Progress Bar to that text variable so it can dynamically change -->
+
+    <TextView
+        android:id="@+id/progressStepsTV"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:textSize="20sp" />
+</merge>
