@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     tools:showIn="@layout/fragment_water">
 
+
     <ProgressBar
         android:id="@+id/waterProgressBar"
         style="?android:attr/progressBarStyleHorizontal"
@@ -11,26 +12,29 @@
         android:layout_centerInParent="true"
         android:indeterminate="false"
         android:max="100"
+        android:min="0"
         android:progressDrawable="@drawable/circular"
-        android:secondaryProgress="100" />
+        android:secondaryProgress="100"
+        android:layout_below="@+id/header_title"/>
 
-    <!--android:progress="@string/progress"-->
-
+    <!--android:progress="@string/progress"
     <ImageView
         android:layout_width="100dp"
         android:layout_height="0dp"
         android:layout_centerInParent="true"
         android:background="@drawable/whitecircle" />
 
-    <!-- we will need to make the text into a variable, locate/access it through java and set the
+     we will need to make the text into a variable, locate/access it through java and set the
     progress field above in Progress Bar to that text variable so it can dynamically change -->
 
     <TextView
         android:id="@+id/progressWaterTV"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_centerInParent="true"
+        android:layout_width="450dp"
+        android:layout_height="150dp"
         android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/header_title"
         android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="#FFFFFF"/>

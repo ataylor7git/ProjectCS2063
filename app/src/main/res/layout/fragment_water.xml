@@ -5,7 +5,7 @@
     android:id="@+id/fragment_water"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#3A3A3A"
+    android:background="#252627"
     tools:context="WaterFragment">
 
     <ImageView
@@ -19,6 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Water Intake"
+        android:id="@+id/header_title"
         android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="#FFFFFF"
@@ -28,6 +29,87 @@
 
     <include layout="@layout/progress_bar_water" />
 
+    <TextView
+        android:id="@+id/currentWaterTV"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:layout_below="@+id/waterProgressBar"
+        android:text="You Drank 0 / x mL of Water Today"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:textColor="#FFFFFF" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/info"
+        android:layout_below="@+id/currentWaterTV">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/currentWaterTV">
+
+            <TextView
+                android:id="@+id/waterGoalTV"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Goal (mL): "
+                android:paddingLeft="10dp"
+                android:textSize="24sp"
+                android:textColor="#FFFFFF" />
+
+            <EditText
+                android:id="@+id/waterGoalTN"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:textSize="24sp"
+                android:textColor="@color/white"
+                android:inputType="number" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/addWaterIntakeTV">
+
+            <TextView
+                android:id="@+id/addWaterTV"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Add (mL): "
+                android:paddingLeft="10dp"
+                android:textSize="24sp"
+                android:textColor="#FFFFFF" />
+
+            <EditText
+                android:id="@+id/addWaterTN"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:textSize="24sp"
+                android:textColor="@color/white"
+                android:inputType="number" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/add_drink_button"
+                android:text="add"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+<!--
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -45,7 +127,7 @@
         app:elevation="9dp"
         android:contentDescription="TODO"
         android:focusable="true" />
-
+-->
 
 </RelativeLayout>
 

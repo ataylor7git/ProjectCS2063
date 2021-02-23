@@ -32,9 +32,12 @@
 
     <TextView
         android:id="@+id/progressStepsTV"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_centerInParent="true"
+        android:layout_width="450dp"
+        android:layout_height="150dp"
         android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:textStyle="bold"
+        android:layout_below="@+id/stepsTitle"
         android:textSize="20sp" />
 </merge>
