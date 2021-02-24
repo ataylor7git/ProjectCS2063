@@ -47,7 +47,7 @@
                 android:id="@+id/firstNameTV"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="first name: "
+                android:text="First Name: "
                 android:textColor="#FFFFFF"
                 android:textSize="24sp" />
 
@@ -75,7 +75,7 @@
                 android:id="@+id/lastNameTV"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="last name: "
+                android:text="Last Name: "
                 android:textColor="#FFFFFF"
                 android:textSize="24sp" />
 
@@ -104,9 +104,9 @@
                 android:id="@+id/stepGoalTV2"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="step goal: "
+                android:text="Step Goal: "
                 android:textColor="#FFFFFF"
-                android:textSize="24sp"/>
+                android:textSize="24sp" />
 
             <EditText
                 android:id="@+id/stepGoalTN2"
@@ -132,9 +132,9 @@
                 android:id="@+id/waterGoalTV"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text=" water goal (ml): "
+                android:text=" Water Goal (ml): "
                 android:textColor="#FFFFFF"
-                android:textSize="24sp"/>
+                android:textSize="24sp" />
 
             <EditText
                 android:id="@+id/waterGoalTN"
