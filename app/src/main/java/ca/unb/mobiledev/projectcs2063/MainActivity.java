@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -19,6 +20,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
     private final static String TAG = "INFO Main Activity";
+    final FragmentManager fm = getSupportFragmentManager();
+    final Fragment fragment3 = new UserFragment();
+    final Fragment fragment2 = new WaterFragment();
+    final Fragment fragment1 = new StepsFragment();
+    Fragment active = fragment1;
 
     BottomNavigationView bottomNavigation;
 
@@ -28,9 +34,12 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        openFragment(StepsFragment.newInstance("", ""));
         bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
+
+        fm.beginTransaction().add(R.id.container, fragment3, "3").hide(fragment3).commit();
+        fm.beginTransaction().add(R.id.container, fragment2, "2").hide(fragment3).commit();
+        fm.beginTransaction().add(R.id.container, fragment1, "1").commit();
 
     }
 
@@ -48,14 +57,17 @@ public class MainActivity extends AppCompatActivity {
                         Log.i(TAG, "listener actions called");
 
                         switch (item.getItemId()) {
-                            case R.id.water:
-                                openFragment(WaterFragment.newInstance("", ""));
-                                return true;
                             case R.id.steps:
-                                openFragment(StepsFragment.newInstance("", ""));
+                                fm.beginTransaction().hide(active).show(fragment1).commit();
+                                active = fragment1;
+                                return true;
+                            case R.id.water:
+                                fm.beginTransaction().hide(active).show(fragment2).commit();
+                                active = fragment2;
                                 return true;
                             case R.id.user:
-                                openFragment(UserFragment.newInstance("", ""));
+                                fm.beginTransaction().hide(active).show(fragment3).commit();
+                                active = fragment3;
                                 return true;
                         }
                         return false;
