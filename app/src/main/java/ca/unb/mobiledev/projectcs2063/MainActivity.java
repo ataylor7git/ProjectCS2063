@@ -21,9 +21,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class MainActivity extends AppCompatActivity {
     private final static String TAG = "INFO Main Activity";
     final FragmentManager fm = getSupportFragmentManager();
-    final Fragment fragment3 = new UserFragment();
-    final Fragment fragment2 = new WaterFragment();
-    final Fragment fragment1 = new StepsFragment();
+    final UserFragment fragment3 = new UserFragment();
+    final WaterFragment fragment2 = new WaterFragment();
+    final StepsFragment fragment1 = new StepsFragment();
     Fragment active = fragment1;
 
     BottomNavigationView bottomNavigation;
@@ -38,8 +38,10 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
 
         fm.beginTransaction().add(R.id.container, fragment3, "3").hide(fragment3).commit();
-        fm.beginTransaction().add(R.id.container, fragment2, "2").hide(fragment3).commit();
+        fm.beginTransaction().add(R.id.container, fragment2, "2").hide(fragment2).commit();
         fm.beginTransaction().add(R.id.container, fragment1, "1").commit();
+
+
 
     }
 

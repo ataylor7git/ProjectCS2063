@@ -2,10 +2,15 @@ package ca.unb.mobiledev.projectcs2063;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.Toast;
+
 import androidx.fragment.app.Fragment;
 
 import static ca.unb.mobiledev.projectcs2063.R.layout.fragment_user;
@@ -53,12 +58,7 @@ public class UserFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        if (rootView==null) {
-            rootView = inflater.inflate(fragment_user, container, false);
-        }
-        else{
-            ((ViewGroup) rootView.getParent()).removeView(rootView);
-        }
+        rootView = inflater.inflate(fragment_user, container, false);
 
         return rootView;
     }

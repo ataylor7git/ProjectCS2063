@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment;
 import static ca.unb.mobiledev.projectcs2063.R.layout.fragment_steps;
 import static ca.unb.mobiledev.projectcs2063.R.layout.fragment_user;
 
+
 public class StepsFragment extends Fragment implements SensorEventListener {
     private final static String TAG = "INFO Steps Fragment";
     private static final String ARG_PARAM1 = "param1";
