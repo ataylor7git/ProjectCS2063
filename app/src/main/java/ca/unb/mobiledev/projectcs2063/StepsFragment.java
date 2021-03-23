@@ -40,6 +40,7 @@ public class StepsFragment extends Fragment implements SensorEventListener {
     private ProgressBar progressBar;
     private int goal = 10000;
     private int currentSteps = 0;
+    //TODO: Allow for the steps to be detected when not on this fragment
     private StepDetector stepDetect;
     private final double STEPTHRESH = 16;
     private int water;
@@ -80,6 +81,7 @@ public class StepsFragment extends Fragment implements SensorEventListener {
 
                 double progress = (double)currentSteps/(double)goal * 100;
                 progressBar.setProgress((int)progress);
+                progressText.setText((int)progress + "%");
             }
 
         }
@@ -133,6 +135,7 @@ public class StepsFragment extends Fragment implements SensorEventListener {
 
                     double progress = (double)currentSteps/(double)goal * 100;
                     progressBar.setProgress((int)progress);
+                    progressText.setText((int)progress + "%");
 
                     stepDetect.setStepCount(currentSteps);
                 }
@@ -152,6 +155,7 @@ public class StepsFragment extends Fragment implements SensorEventListener {
 
                     double progress = (double)currentSteps/(double)goal * 100;
                     progressBar.setProgress((int)progress);
+                    progressText.setText((int)progress + "%");
                 }
 
             });
@@ -173,13 +177,8 @@ public class StepsFragment extends Fragment implements SensorEventListener {
         super.onPause();
         if(itemRepository != null)
         {
-            Log.i(TAG, "Update");
             int date = MainActivity.getDate();
             itemRepository.updateItem(currentSteps, water, date);
-        }
-        else
-        {
-            Log.i(TAG, "Not update");
         }
     }
 

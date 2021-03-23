@@ -47,8 +47,6 @@ public class MainActivity extends AppCompatActivity {
         item.observe(this, item1 -> {
             if(item1 == null)
                 itemRepository.insertRecord(-1, 10000,2000);
-            else
-                Log.i(TAG, "HERE IT IS: Wat: " + item1.getWater() + " Steps: " + item1.getSteps() + " Date: " + item1.getDate());
         });
         WaterFragment.setRepository(itemRepository);
         StepsFragment.setRepository(itemRepository);
