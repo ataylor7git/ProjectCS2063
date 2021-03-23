@@ -86,7 +86,6 @@ public class StepsFragment extends Fragment implements SensorEventListener {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.i(TAG, "oncreate method called");
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
@@ -133,9 +132,9 @@ public class StepsFragment extends Fragment implements SensorEventListener {
                 progressText.setText((int)progress + "%");
             }
 
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {Log.i(TAG, "Text Changed Before");}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
-            public void onTextChanged(CharSequence s, int start, int before, int count) {Log.i(TAG, "Text Changed ON");}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
         });
 
         CharSequence goalSequence = goal + "";

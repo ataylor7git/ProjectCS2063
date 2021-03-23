@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.LiveData;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -17,10 +18,20 @@ import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
+import ca.unb.mobiledev.projectcs2063.entity.Item;
+import ca.unb.mobiledev.projectcs2063.repository.ItemRepository;
+
 public class MainActivity extends AppCompatActivity {
     private final static String TAG = "INFO Main Activity";
 
     BottomNavigationView bottomNavigation;
+
+    private ItemRepository itemRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +42,14 @@ public class MainActivity extends AppCompatActivity {
         openFragment(StepsFragment.newInstance("", ""));
         bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
+        itemRepository = new ItemRepository(getApplication());
+        LiveData<Item> item = itemRepository.getGoals();
+        item.observe(this, item1 -> {
+            if(item1 == null)
+                itemRepository.insertRecord(-1, 10000,2000);
+            else
+                Log.i(TAG, "HERE IT IS: Wat: " + item1.getWater() + " Steps: " + item1.getSteps() + " Date: " + item1.getDate());
+        });
 
     }
 
@@ -56,9 +75,20 @@ public class MainActivity extends AppCompatActivity {
                                 return true;
                             case R.id.user:
                                 openFragment(UserFragment.newInstance("", ""));
+                                UserFragment.setRepository(itemRepository);
                                 return true;
                         }
                         return false;
                     }
                 };
+
+
+    public static int getDate()
+    {
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("ddMMyy", Locale.getDefault());
+        String formattedDate = df.format(c);
+        int date = Integer.parseInt(formattedDate);
+        return date;
     }
+}

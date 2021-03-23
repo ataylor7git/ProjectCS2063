@@ -17,12 +17,15 @@ import ca.unb.mobiledev.projectcs2063.entity.Item;
 @Dao
 public interface ItemDao {
 
-    @Query("SELECT * from item_table WHERE name = :itemName")
-    LiveData<List<Item>> listAllRecords(String itemName);
+    @Query("SELECT * from item_table WHERE date = :itemDate")
+    LiveData<Item> getRecordByDate(int itemDate);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(Item item);
 
     @Delete
     void deleteItem(Item item);
+
+    @Query("UPDATE item_table SET steps = :itemStep, water = :itemWater WHERE date = :itemDate")
+    int updateItem(int itemStep, int itemWater, int itemDate);
 }

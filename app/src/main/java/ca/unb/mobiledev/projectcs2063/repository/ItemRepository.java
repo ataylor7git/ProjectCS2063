@@ -18,14 +18,19 @@ public class ItemRepository {
         itemDao = db.itemDao();
     }
 
-    public LiveData<List<Item>> listAllRecords(String name) {
-        return itemDao.listAllRecords(name);
+    public LiveData<Item> getRecordByDate(int date) {
+        return itemDao.getRecordByDate(date);
     }
 
-    public void insertRecord(String name, int num) {
+    public LiveData<Item> getGoals() {
+        return itemDao.getRecordByDate(-1);
+    }
+
+    public void insertRecord(int date, int steps, int water) {
         Item newItem = new Item();
-        newItem.setName(name);
-        newItem.setNum(num);
+        newItem.setDate(date);
+        newItem.setSteps(steps);
+        newItem.setWater(water);
 
         insertRecord(newItem);
     }
@@ -39,6 +44,13 @@ public class ItemRepository {
     public void deleteRecord(final Item item) {
         AppDatabase.databaseWriterExecutor.execute(() -> {
             itemDao.deleteItem(item);
+        });
+    }
+
+    public void updateItem(int itemStep, int itemWater, int itemDate)
+    {
+        AppDatabase.databaseWriterExecutor.execute(() -> {
+            itemDao.updateItem(itemStep, itemWater, itemDate);
         });
     }
 }
