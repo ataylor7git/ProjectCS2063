@@ -11,7 +11,9 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 
+import ca.unb.mobiledev.projectcs2063.entity.Item;
 import ca.unb.mobiledev.projectcs2063.repository.ItemRepository;
 
 import static ca.unb.mobiledev.projectcs2063.R.layout.fragment_user;
@@ -115,6 +117,20 @@ public class UserFragment extends Fragment{
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
+        });
+
+        LiveData<Item> item = itemRepository.getGoals();
+        item.observe(this, item1 -> {
+            if(item1 != null) {
+                stepGoal = item1.getSteps();
+                waterGoal = item1.getWater();
+
+                CharSequence goalSequence = stepGoal + "";
+                sGoalInput.setText(goalSequence);
+
+                goalSequence = waterGoal + "";
+                wGoalInput.setText(goalSequence);
+            }
         });
 
         return rootView;

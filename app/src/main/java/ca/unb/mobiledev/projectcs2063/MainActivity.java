@@ -50,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
             else
                 Log.i(TAG, "HERE IT IS: Wat: " + item1.getWater() + " Steps: " + item1.getSteps() + " Date: " + item1.getDate());
         });
+        WaterFragment.setRepository(itemRepository);
+        StepsFragment.setRepository(itemRepository);
+        UserFragment.setRepository(itemRepository);
 
     }
 
@@ -75,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
                                 return true;
                             case R.id.user:
                                 openFragment(UserFragment.newInstance("", ""));
-                                UserFragment.setRepository(itemRepository);
                                 return true;
                         }
                         return false;

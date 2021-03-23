@@ -16,6 +16,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import ca.unb.mobiledev.projectcs2063.repository.ItemRepository;
+
 import static ca.unb.mobiledev.projectcs2063.R.layout.*;
 
 public class WaterFragment extends Fragment {
@@ -36,6 +38,8 @@ public class WaterFragment extends Fragment {
     private Button addButton;
     private int goal_intake = 2000;
     private int current_water_intake = 0;
+
+    private static ItemRepository itemRepository;
 
     public WaterFragment() {
         Log.i(TAG, "water fragment constructer called");
@@ -123,6 +127,11 @@ public class WaterFragment extends Fragment {
 
         return rootView;
 
+    }
+
+    public static void setRepository(ItemRepository ir)
+    {
+        itemRepository = ir;
     }
 
 }
