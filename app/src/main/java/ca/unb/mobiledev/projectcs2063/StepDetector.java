@@ -40,4 +40,9 @@ public class StepDetector {
     {
         return stepCount;
     }
+
+    public void setStepCount(int steps)
+    {
+        stepCount = steps;
+    }
 }

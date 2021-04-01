@@ -18,8 +18,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 
 
+import ca.unb.mobiledev.projectcs2063.entity.Item;
+import ca.unb.mobiledev.projectcs2063.repository.ItemRepository;
 
 import static ca.unb.mobiledev.projectcs2063.R.layout.fragment_steps;
 import static ca.unb.mobiledev.projectcs2063.R.layout.fragment_user;
@@ -38,8 +41,12 @@ public class StepsFragment extends Fragment implements SensorEventListener {
     private ProgressBar progressBar;
     private int goal = 10000;
     private int currentSteps = 0;
+    //TODO: Allow for the steps to be detected when not on this fragment
     private StepDetector stepDetect;
     private final double STEPTHRESH = 16;
+    private int water;
+
+    private static ItemRepository itemRepository;
 
 
     public StepsFragment() {
@@ -75,6 +82,7 @@ public class StepsFragment extends Fragment implements SensorEventListener {
 
                 double progress = (double)currentSteps/(double)goal * 100;
                 progressBar.setProgress((int)progress);
+                progressText.setText((int)progress + "%");
             }
 
         }
@@ -87,7 +95,6 @@ public class StepsFragment extends Fragment implements SensorEventListener {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.i(TAG, "oncreate method called");
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
@@ -110,41 +117,70 @@ public class StepsFragment extends Fragment implements SensorEventListener {
         progressBar = (ProgressBar) rootView.findViewById(R.id.stepProgressBar);
         progressText = (TextView) rootView.findViewById(R.id.progressStepsTV);
 
-        //goalInput = (EditText) userView.findViewById(R.id.stepGoalTN);
-        goalInput = (EditText) rootView.findViewById(R.id.stepGoalTN);
-        goalInput.addTextChangedListener(new TextWatcher() {
 
-            public void afterTextChanged(Editable s) {
-                Log.i(TAG, "+" + goalInput.getText().toString() + "+");
-                if(goalInput.getText().toString().equals("") || goalInput.getText().toString().equals("0"))
-                {
-                    goal = 1;
-                }
+
+        //Write the current steps
+        int date = MainActivity.getDate();
+        if(itemRepository != null) {
+            LiveData<Item> item = itemRepository.getRecordByDate(date);
+            item.observe(this, item1 -> {
+                if (item1 == null)
+                    itemRepository.insertRecord(date, 0, 0);
                 else {
-                    String goalIn = goalInput.getText().toString();
-                    goal = Integer.parseInt(goalIn);
+                    currentSteps = item1.getSteps();
+                    water = item1.getWater();
+
+                    CharSequence stepsSequence = currentSteps + " / " + goal + " Steps Today";
+
+                    currentStepTV.setText(stepsSequence);
+
+                    double progress = (double)currentSteps/(double)goal * 100;
+                    progressBar.setProgress((int)progress);
+                    progressText.setText((int)progress + "%");
+
+                    stepDetect.setStepCount(currentSteps);
                 }
 
-                CharSequence stepsSequence = currentSteps + " / " + goal + " Steps Today";
+            });
 
-                currentStepTV.setText(stepsSequence);
+            //Write the goal
+            LiveData<Item> goalItem = itemRepository.getGoals();
+            goalItem.observe(this, item1 -> {
+                if(item1 != null) {
+                    goal = item1.getSteps();
 
-                double progress = (double)currentSteps/(double)goal * 100;
-                progressBar.setProgress((int)progress);
-                progressText.setText((int)progress + "%");
-            }
+                    currentSteps = stepDetect.getStepCount();
+                    CharSequence stepsSequence = currentSteps + " / " + goal + " Steps Today";
 
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {Log.i(TAG, "Text Changed Before");}
+                    currentStepTV.setText(stepsSequence);
 
-            public void onTextChanged(CharSequence s, int start, int before, int count) {Log.i(TAG, "Text Changed ON");}
-        });
+                    double progress = (double)currentSteps/(double)goal * 100;
+                    progressBar.setProgress((int)progress);
+                    progressText.setText((int)progress + "%");
+                }
 
-        CharSequence goalSequence = goal + "";
+            });
+        }
 
-        goalInput.setText(goalSequence);
 
 
         return rootView;
+    }
+
+    public static void setRepository(ItemRepository ir)
+    {
+        itemRepository = ir;
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        if(itemRepository != null)
+        {
+            int date = MainActivity.getDate();
+            itemRepository.updateItem(currentSteps, water, date);
+        }
     }
 
 }
