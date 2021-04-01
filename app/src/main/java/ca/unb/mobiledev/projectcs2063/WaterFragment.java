@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,6 +16,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import ca.unb.mobiledev.projectcs2063.entity.Item;
+import ca.unb.mobiledev.projectcs2063.repository.ItemRepository;
 
 import static ca.unb.mobiledev.projectcs2063.R.layout.*;
 
@@ -31,11 +35,13 @@ public class WaterFragment extends Fragment {
     private ProgressBar progressCircle;
     private TextView progressText;
     private TextView currentWaterTV;
-    private EditText goalInput;
     private EditText addWaterTN;
     private Button addButton;
     private int goal_intake = 2000;
     private int current_water_intake = 0;
+
+    private static ItemRepository itemRepository;
+    private int steps = 0;
 
     public WaterFragment() {
         Log.i(TAG, "water fragment constructer called");
@@ -75,35 +81,7 @@ public class WaterFragment extends Fragment {
         progressCircle = (ProgressBar) rootView.findViewById(R.id.waterProgressBar);
         progressText = (TextView) rootView.findViewById(R.id.progressWaterTV);
         addWaterTN = (EditText) rootView.findViewById(R.id.addWaterTN);
-        goalInput = (EditText) rootView.findViewById(R.id.waterGoalTN);
         addButton = (Button) rootView.findViewById(R.id.add_drink_button);
-
-        goalInput.addTextChangedListener(new TextWatcher() {
-
-            public void afterTextChanged(Editable s) {
-                Log.i(TAG, "+" + goalInput.getText().toString() + "+");
-                if(goalInput.getText().toString().equals("") || goalInput.getText().toString().equals("0"))
-                {
-                    goal_intake = 2000;
-                }
-                else {
-                    String goalIn = goalInput.getText().toString();
-                    goal_intake = Integer.parseInt(goalIn);
-                }
-
-                CharSequence waterSequence = current_water_intake + " / " + goal_intake + "mL of Water Drank Today";
-                currentWaterTV.setText(waterSequence);
-
-                double progress = ((double) current_water_intake /(double) goal_intake) * 100;
-                progressCircle.setProgress((int)progress);
-                progressText.setText((int)progress + "%");
-            }
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {Log.i(TAG, "Text Changed Before");}
-            public void onTextChanged(CharSequence s, int start, int before, int count) {Log.i(TAG, "Text Changed ON");}
-        });
-
-        CharSequence goalSequence = goal_intake + "";
-        goalInput.setText(goalSequence);
 
         addButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -120,9 +98,64 @@ public class WaterFragment extends Fragment {
             }
         });
 
+        //Write the current water
+        int date = MainActivity.getDate();
+        if(itemRepository != null) {
+            LiveData<Item> item = itemRepository.getRecordByDate(date);
+            item.observe(this, item1 -> {
+                if (item1 == null)
+                    itemRepository.insertRecord(date, 0, 0);
+                else {
+                    steps = item1.getSteps();
+                    current_water_intake = item1.getWater();
+
+                    CharSequence waterSequence = "You Drank " + current_water_intake + " / " + goal_intake + "mL of Water Today";
+                    currentWaterTV.setText(waterSequence);
+
+                    double progress = (double) current_water_intake / (double) goal_intake * 100;
+                    progressCircle.setProgress((int) progress);
+                    progressText.setText((int)progress + "%");
+
+                }
+
+            });
+
+            //Write the goal
+            LiveData<Item> goalItem = itemRepository.getGoals();
+            goalItem.observe(this, item1 -> {
+                if (item1 != null) {
+                    goal_intake = item1.getWater();
+
+                    CharSequence waterSequence = "You Drank " + current_water_intake + " / " + goal_intake + "mL of Water Today";
+                    currentWaterTV.setText(waterSequence);
+
+                    double progress = (double) current_water_intake / (double) goal_intake * 100;
+                    progressCircle.setProgress((int) progress);
+                    progressText.setText((int)progress + "%");
+                }
+
+            });
+        }
+
 
         return rootView;
 
+    }
+
+    public static void setRepository(ItemRepository ir)
+    {
+        itemRepository = ir;
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        if(itemRepository != null)
+        {
+            int date = MainActivity.getDate();
+            itemRepository.updateItem(steps, current_water_intake, date);
+        }
     }
 
 }

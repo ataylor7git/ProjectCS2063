@@ -55,6 +55,7 @@
                 android:id="@+id/firstNameET"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="#FFFFFF"
                 android:ems="10"
                 android:inputType="text" />
 
@@ -84,6 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:textColor="#FFFFFF"
                 android:inputType="text" />
 
         </LinearLayout>
@@ -113,6 +115,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:textColor="#FFFFFF"
                 android:inputType="number" />
 
         </LinearLayout>
@@ -141,6 +144,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:textColor="#FFFFFF"
                 android:inputType="number" />
 
         </LinearLayout>

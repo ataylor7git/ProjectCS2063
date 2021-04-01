@@ -2,11 +2,19 @@ package ca.unb.mobiledev.projectcs2063;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+
+import ca.unb.mobiledev.projectcs2063.entity.Item;
+import ca.unb.mobiledev.projectcs2063.repository.ItemRepository;
 
 import static ca.unb.mobiledev.projectcs2063.R.layout.fragment_user;
 
@@ -21,6 +29,11 @@ public class UserFragment extends Fragment{
     private int waterGoal;
     private int stepGoal;
     private View rootView;
+
+    private EditText sGoalInput;
+    private EditText wGoalInput;
+    private boolean changed = false;
+    private static ItemRepository itemRepository;
 
 
     public UserFragment() {
@@ -60,11 +73,92 @@ public class UserFragment extends Fragment{
             ((ViewGroup) rootView.getParent()).removeView(rootView);
         }
 
+        //The step goal edit text
+        sGoalInput = (EditText) rootView.findViewById(R.id.stepGoalTN2);
+        sGoalInput.addTextChangedListener(new TextWatcher() {
+
+            public void afterTextChanged(Editable s) {
+
+
+                if(sGoalInput.getText().toString().equals("") || sGoalInput.getText().toString().equals("0"))
+                {
+                    stepGoal = 1;
+                }
+                else {
+                    String goalIn = sGoalInput.getText().toString();
+                    stepGoal = Integer.parseInt(goalIn);
+                }
+                changed = true;
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+        });
+
+        //The water goal edit text
+        wGoalInput = (EditText) rootView.findViewById(R.id.waterGoalTN);
+        wGoalInput.addTextChangedListener(new TextWatcher() {
+
+            public void afterTextChanged(Editable s) {
+
+
+                if(wGoalInput.getText().toString().equals("") || wGoalInput.getText().toString().equals("0"))
+                {
+                    waterGoal = 1;
+                }
+                else {
+                    String goalIn = wGoalInput.getText().toString();
+                    waterGoal = Integer.parseInt(goalIn);
+                }
+                changed = true;
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+        });
+
+        LiveData<Item> item = itemRepository.getGoals();
+        item.observe(this, item1 -> {
+            if(item1 != null) {
+                stepGoal = item1.getSteps();
+                waterGoal = item1.getWater();
+
+                CharSequence goalSequence = stepGoal + "";
+                sGoalInput.setText(goalSequence);
+
+                goalSequence = waterGoal + "";
+                wGoalInput.setText(goalSequence);
+            }
+        });
+
         return rootView;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        if(changed && itemRepository != null)
+        {
+            Log.i(TAG, "Update");
+            itemRepository.updateItem(stepGoal, waterGoal, -1);
+            changed = false;
+        }
+        else
+        {
+            Log.i(TAG, "Not update");
+        }
+    }
+
+    public static void setRepository(ItemRepository ir)
+    {
+        itemRepository = ir;
     }
 }
