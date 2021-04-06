@@ -30,8 +30,8 @@ import ca.unb.mobiledev.projectcs2063.repository.ItemRepository;
 public class MainActivity extends AppCompatActivity {
     private final static String TAG = "INFO Main Activity";
 
-    BottomNavigationView bottomNavigation;
-    Toolbar toolbar;
+    private BottomNavigationView bottomNavigation;
+    private Toolbar toolbar;
     private ItemRepository itemRepository;
 
     @Override
@@ -73,13 +73,13 @@ public class MainActivity extends AppCompatActivity {
                     Log.i(TAG, "listener actions called");
 
                     switch (item.getItemId()) {
-                        case R.id.water:
-                            openFragment(WaterFragment.newInstance("", ""));
-                            toolbar.setTitle(R.string.water_name);
-                            return true;
                         case R.id.steps:
                             openFragment(StepsFragment.newInstance("", ""));
                             toolbar.setTitle(R.string.steps_name);
+                            return true;
+                        case R.id.water:
+                            openFragment(WaterFragment.newInstance("", ""));
+                            toolbar.setTitle(R.string.water_name);
                             return true;
                         case R.id.user:
                             openFragment(UserFragment.newInstance("", ""));

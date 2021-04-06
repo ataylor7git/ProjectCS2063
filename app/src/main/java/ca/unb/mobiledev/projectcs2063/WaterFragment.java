@@ -2,12 +2,14 @@ package ca.unb.mobiledev.projectcs2063;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 
+import android.text.style.BackgroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -205,6 +207,8 @@ public class WaterFragment extends Fragment {
                 System.out.println("Clicked! previous selected option is: " + selectedOption);
                 selectedOption = 50;
                 System.out.println("Clicked! new selected option is: " + selectedOption);
+                option1.setBackgroundColor(Color.rgb(60, 80, 100));
+
 
             }
         });
@@ -213,6 +217,7 @@ public class WaterFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 selectedOption = 100;
+                //option2.setBackgroundColor(Color.rgb(65, 85, 110));
             }
         });
 
@@ -300,6 +305,10 @@ public class WaterFragment extends Fragment {
     }
 
     public void addWater(int waterToAdd) {
+        if (waterToAdd == 0){
+            Toast.makeText(getContext(), "Please select an option", Toast.LENGTH_LONG).show();
+            return;
+        }
         current_water_intake += waterToAdd;
         updateWaterDisplay();
         Toast.makeText(getContext(), waterToAdd + " ml of water has been added!" ,
@@ -323,9 +332,13 @@ public class WaterFragment extends Fragment {
     }
 
     public void removeWater (int waterToRemove) {
-        System.out.println("before removing: "  + current_water_intake);
+        if (waterToRemove == 0){
+            Toast.makeText(getContext(), "Please select an option", Toast.LENGTH_LONG).show();
+            return;
+        }
+        //System.out.println("before removing: "  + current_water_intake);
         current_water_intake = current_water_intake - waterToRemove;
-        System.out.println("after removing: "  + current_water_intake);
+        //System.out.println("after removing: "  + current_water_intake);
 
 
         if (current_water_intake < 0 ) {
