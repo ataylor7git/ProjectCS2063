@@ -65,7 +65,7 @@ public class ItemRepository {
     public void updateWaterItem(int itemWater, int itemDate)
     {
         AppDatabase.databaseWriterExecutor.execute(() -> {
-            itemDao.updateStepItem(itemWater, itemDate);
+            itemDao.updateWaterItem(itemWater, itemDate);
         });
     }
 }
