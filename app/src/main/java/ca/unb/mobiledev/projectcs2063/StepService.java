@@ -63,7 +63,6 @@ public class StepService extends Service implements SensorEventListener {
                 .build();
         startForeground(101, notif);
 
-
         super.onCreate();
     }
 
