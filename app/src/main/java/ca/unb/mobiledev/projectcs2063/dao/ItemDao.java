@@ -28,4 +28,10 @@ public interface ItemDao {
 
     @Query("UPDATE item_table SET steps = :itemStep, water = :itemWater WHERE date = :itemDate")
     int updateItem(int itemStep, int itemWater, int itemDate);
+
+    @Query("UPDATE item_table SET steps = :itemStep WHERE date = :itemDate")
+    int updateStepItem(int itemStep, int itemDate);
+
+    @Query("UPDATE item_table SET water = :itemWater WHERE date = :itemDate")
+    int updateWaterItem(int itemWater, int itemDate);
 }
