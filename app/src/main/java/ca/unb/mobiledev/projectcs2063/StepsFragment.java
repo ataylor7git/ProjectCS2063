@@ -54,7 +54,6 @@ public class StepsFragment extends Fragment{
     private int currentSteps = 0;
     //TODO: Allow for the steps to be detected when not on this fragment
     private static StepDetector detector;
-    private int water;
 
     private static ItemRepository itemRepository;
 
@@ -118,7 +117,6 @@ public class StepsFragment extends Fragment{
                     currentSteps = item1.getSteps();
                     if(detector.getStepCount() == 0)
                         detector.setStepCount(currentSteps);
-                    water = item1.getWater();
                     updateData();
 
                 }
@@ -130,7 +128,7 @@ public class StepsFragment extends Fragment{
             goalItem.observe(this, item1 -> {
                 if(item1 != null) {
                     goal = item1.getSteps();
-
+                    detector.setStepGoal(goal);
                     updateData();
                 }
 

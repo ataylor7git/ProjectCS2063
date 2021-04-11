@@ -12,7 +12,7 @@ public class StepDetector {
     private int stepCount = 0;
     private boolean isActiveCounter;
     private double topLimit = 27;
-    private boolean changedSteps = false;
+    private int goal = 0;
 
     public StepDetector() {
         isActiveCounter = true;
@@ -29,7 +29,6 @@ public class StepDetector {
             isActiveCounter = false;
             Log.i(TAG, "Acceleration: " + accelerometerValue);
             stepCount++;
-            changedSteps = true;
             return true;
         }
 
@@ -47,13 +46,13 @@ public class StepDetector {
         stepCount = steps;
     }
 
-    public boolean changed()
+    public int getStepGoal()
     {
-        if(changedSteps)
-        {
-            changedSteps = false;
-            return true;
-        }
-        return false;
+        return goal;
+    }
+
+    public void setStepGoal(int g)
+    {
+        goal = g;
     }
 }
