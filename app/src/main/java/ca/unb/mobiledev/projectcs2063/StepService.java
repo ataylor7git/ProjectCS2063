@@ -10,16 +10,15 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
-import androidx.lifecycle.LiveData;
+import androidx.core.app.NotificationManagerCompat;
 
-import ca.unb.mobiledev.projectcs2063.entity.Item;
+
 import ca.unb.mobiledev.projectcs2063.repository.ItemRepository;
 
 public class StepService extends Service implements SensorEventListener {
@@ -27,6 +26,7 @@ public class StepService extends Service implements SensorEventListener {
     private final double STEPTHRESH = 12.9;
     private final static String TAG = "INFO Steps Detector";
     private final String CHANNELID = "StepServiceNotif";
+    private final String STEPCHANNELID = "StepServiceNotif";
     private int date = 0;
 
     private static ItemRepository itemRepository;
@@ -53,12 +53,13 @@ public class StepService extends Service implements SensorEventListener {
         date = MainActivity.getDate();
 
         createNotificationChannel();
+        createStepNotificationChannel();
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNELID)
                 .setContentTitle("Step Detector")
                 .setContentText("Counting steps in background")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
-        Notification notif = builder.setOngoing(true)
+        Notification notif = builder.setOngoing(false)
                 .setSmallIcon(R.drawable.walk)
                 .build();
         startForeground(101, notif);
@@ -90,6 +91,21 @@ public class StepService extends Service implements SensorEventListener {
                 Intent sendLevel = new Intent();
                 sendLevel.setAction("GET_STEPS");
                 sendBroadcast(sendLevel);
+                if(detector.getStepCount() == detector.getStepGoal())
+                {
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(this, STEPCHANNELID)
+                            .setContentTitle("Congratulations")
+                            .setContentText("You have reached your daily step goal!")
+                            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                            .setAutoCancel(true);
+
+                    Notification notif = builder.setOngoing(false)
+                            .setSmallIcon(R.drawable.walk)
+                            .build();
+                    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+                    notificationManager.notify(100, notif);
+
+                }
 
             }
 
@@ -114,6 +130,22 @@ public class StepService extends Service implements SensorEventListener {
             String description = "detecting steps in background";
             int importance = NotificationManager.IMPORTANCE_MIN;
             NotificationChannel channel = new NotificationChannel(CHANNELID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    private void createStepNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Congratulations";
+            String description = "You have reached your daily step goal!";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(STEPCHANNELID, name, importance);
             channel.setDescription(description);
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
