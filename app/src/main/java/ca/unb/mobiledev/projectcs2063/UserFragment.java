@@ -36,6 +36,7 @@ public class UserFragment extends Fragment{
 
     private TextInputEditText sGoalInput, wGoalInput;
     private TextInputEditText nameET, weightET, heightET, ageET;
+    private TextView title;
     private String name = "";
     private String weight, height, age = "";
 
@@ -80,13 +81,7 @@ public class UserFragment extends Fragment{
             ((ViewGroup) rootView.getParent()).removeView(rootView);
         }
 
-        TextView title = rootView.findViewById(R.id.title);
-        if (title.equals("")){
-            title.setText("Settings");
-        }
-        else {
-            title.setText(name + "'s Settings");
-        }
+        title = rootView.findViewById(R.id.title);
 
         //The step goal edit text
         TextInputLayout sGoalLayout = rootView.findViewById(R.id.step_goal);
@@ -143,13 +138,18 @@ public class UserFragment extends Fragment{
             public void afterTextChanged(Editable s) {
 
 
-                if(nameET.getText().toString().equals("") )
+                if(nameET.getText().toString().isEmpty() )
                 {
                     name = "";
+                    System.out.println("Empty");
+                    title.setText("Settings");
                 }
                 else {
                     String nameIn = nameET.getText().toString();
+                    System.out.println("nameIn is : " + nameIn);
                     name = nameIn;
+                    System.out.println("Title Name is: " + name);
+                    title.setText(name + "'s Settings");
                 }
                 changed = true;
             }
@@ -253,6 +253,7 @@ public class UserFragment extends Fragment{
                 stepGoal = item1.getSteps();
                 waterGoal = item1.getWater();
                 name = item1.getName();
+                System.out.println("name in  item observe is: " + name);
                 age = item1.getAge();
                 weight = item1.getWeight();
                 height = item1.getHeight();
@@ -265,8 +266,6 @@ public class UserFragment extends Fragment{
 
                 goalSequence = name;
                 nameET.setText(goalSequence);
-
-                title.setText(name + "'s Settings");
 
                 goalSequence = age;
                 ageET.setText(goalSequence);

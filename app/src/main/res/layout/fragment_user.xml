@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/title"
             android:layout_alignParentTop="true"
-            android:text="User Info"
+            android:text="Settings"
             android:textColor="#FFFFFF"
             android:textSize="24sp"
             android:textStyle="bold"
@@ -32,7 +32,7 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="1000dp"
+            android:layout_height="100dp"
             android:src="@drawable/settings_icon"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
