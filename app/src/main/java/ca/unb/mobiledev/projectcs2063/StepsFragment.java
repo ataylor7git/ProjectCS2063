@@ -1,44 +1,23 @@
 package ca.unb.mobiledev.projectcs2063;
 
 import android.annotation.SuppressLint;
-import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.ServiceConnection;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.IBinder;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.app.Service;
-
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
-
-
-import java.util.Timer;
-import java.util.TimerTask;
-
 import ca.unb.mobiledev.projectcs2063.entity.Item;
 import ca.unb.mobiledev.projectcs2063.repository.ItemRepository;
 
 import static ca.unb.mobiledev.projectcs2063.R.layout.fragment_steps;
-import static ca.unb.mobiledev.projectcs2063.R.layout.fragment_user;
 
 public class StepsFragment extends Fragment{
     private final static String TAG = "INFO Steps Fragment";
@@ -54,7 +33,6 @@ public class StepsFragment extends Fragment{
     private int currentSteps = 0;
     //TODO: Allow for the steps to be detected when not on this fragment
     private static StepDetector detector;
-    private int water;
 
     private static ItemRepository itemRepository;
 
@@ -118,7 +96,6 @@ public class StepsFragment extends Fragment{
                     currentSteps = item1.getSteps();
                     if(detector.getStepCount() == 0)
                         detector.setStepCount(currentSteps);
-                    water = item1.getWater();
                     updateData();
 
                 }
@@ -130,7 +107,7 @@ public class StepsFragment extends Fragment{
             goalItem.observe(this, item1 -> {
                 if(item1 != null) {
                     goal = item1.getSteps();
-
+                    detector.setStepGoal(goal);
                     updateData();
                 }
 
