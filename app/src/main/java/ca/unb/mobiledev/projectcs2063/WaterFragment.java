@@ -3,13 +3,13 @@ package ca.unb.mobiledev.projectcs2063;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 
-import android.text.style.BackgroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,9 +43,8 @@ public class WaterFragment extends Fragment {
     private TextView progressText;
     private TextView currentWaterTV;
     //private EditText addWaterTN;
-    private Button addButton;
-    private Button removeButton;
-    private Button clearButton;
+    private Button addButton, removeButton, clearButton;
+    //private FloatingActionButton customButton;
 
     private TextView dateDisplay;
     private Calendar calendar;
@@ -55,6 +54,11 @@ public class WaterFragment extends Fragment {
     private int goal_intake = 2000;
     private int current_water_intake = 0;
     private int selectedOption = 0;
+
+    LinearLayout option1, option2, option3, option4, option5, optionCustom;
+    Drawable option1Background, option2Background, option3Background, option4Background,
+    option5Background, optionCustomBackground;
+    int selectedColor;
 
 
 
@@ -107,19 +111,21 @@ public class WaterFragment extends Fragment {
         clearButton = rootView.findViewById(R.id.clear_drink_button);
 
         //display the date
-        dateDisplay = rootView.findViewById(R.id.header_title);
+        dateDisplay = rootView.findViewById(R.id.date_title);
         calendar = Calendar.getInstance();
         dateFormat = new SimpleDateFormat("EEE MMM d, yyyy" );
         date = dateFormat.format(calendar.getTime());
         dateDisplay.setText(date);
 
 
-        LinearLayout option1 = rootView.findViewById(R.id.option1);
-        LinearLayout option2 =  rootView.findViewById(R.id.option2);
-        LinearLayout option3 = rootView.findViewById(R.id.option3);
-        LinearLayout option4 = rootView.findViewById(R.id.option4);
-        LinearLayout option5 = rootView.findViewById(R.id.option5);
-        LinearLayout optionCustom = rootView.findViewById(R.id.optionCustom);
+        option1 = rootView.findViewById(R.id.option1);
+        option2 =  rootView.findViewById(R.id.option2);
+        option3 = rootView.findViewById(R.id.option3);
+        option4 = rootView.findViewById(R.id.option4);
+        option5 = rootView.findViewById(R.id.option5);
+        optionCustom = rootView.findViewById(R.id.optionCustom);
+        //customButton = rootView.findViewById(R.id.customButton);
+
 
 
 
@@ -135,6 +141,7 @@ public class WaterFragment extends Fragment {
                 //}
 
                 addWater(selectedOption);
+                setNonSelected();
                 //current_water_intake += selectedOption;
 
             }
@@ -145,6 +152,7 @@ public class WaterFragment extends Fragment {
 
                 System.out.println("selected option: " + selectedOption);
                 removeWater(selectedOption);
+                setNonSelected();
 
             }
         });
@@ -152,7 +160,7 @@ public class WaterFragment extends Fragment {
         clearButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 AlertDialog.Builder clearAlert = new AlertDialog.Builder(getContext());
-                clearAlert.setMessage("Warning! This will delete your data for the day!");
+                clearAlert.setMessage("Warning! This will permanently delete your data for today!");
                 clearAlert.setCancelable(true);
 
                 clearAlert.setPositiveButton("Delete my data", new DialogInterface.OnClickListener() {
@@ -162,7 +170,7 @@ public class WaterFragment extends Fragment {
                     }
                 });
 
-                clearAlert.setNeutralButton(android.R.string.no, null);
+                clearAlert.setNeutralButton(android.R.string.cancel, null);
                 clearAlert.create();
                 clearAlert.show();
             }
@@ -201,14 +209,30 @@ public class WaterFragment extends Fragment {
             });
         }
 
+        option1Background = option1.getBackground();
+        option2Background = option2.getBackground();
+        option3Background = option3.getBackground();
+        option4Background = option4.getBackground();
+        option5Background = option5.getBackground();
+        optionCustomBackground = optionCustom.getBackground();
+        selectedColor = Color.rgb(60, 80, 100);
+
         option1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 System.out.println("Clicked! previous selected option is: " + selectedOption);
                 selectedOption = 50;
                 System.out.println("Clicked! new selected option is: " + selectedOption);
-                option1.setBackgroundColor(Color.rgb(60, 80, 100));
 
+                //setSelected(option1);
+                option1.setBackground(option1Background);
+                option2.setBackground(option2Background);
+                option3.setBackground(option3Background);
+                option4.setBackground(option4Background);
+                option5.setBackground(option5Background);
+                optionCustom.setBackground(optionCustomBackground);
+
+                option1.setBackgroundColor(selectedColor);
 
             }
         });
@@ -216,35 +240,40 @@ public class WaterFragment extends Fragment {
         option2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedOption = 100;
+                selectedOption = 125;
                 //option2.setBackgroundColor(Color.rgb(65, 85, 110));
+                setSelected(option2);
             }
         });
 
         option3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedOption = 150;
+                selectedOption = 250;
+                setSelected(option3);
             }
         });
 
         option4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedOption = 200;
+                selectedOption = 500;
+                setSelected(option4);
             }
         });
 
         option5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedOption = 250;
+                selectedOption = 1000;
+                setSelected(option5);
             }
         });
 
         optionCustom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                setSelected(optionCustom);
 
 
                 LayoutInflater layout = LayoutInflater.from(getActivity());
@@ -253,8 +282,6 @@ public class WaterFragment extends Fragment {
 
                 android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(getContext());
                 alertDialogBuilder.setView(promptsView);
-
-
 
                 alertDialogBuilder.setPositiveButton("ADD", new DialogInterface.OnClickListener() {
                     @Override
@@ -269,6 +296,7 @@ public class WaterFragment extends Fragment {
                             }
 
                             addWater(selectedOption);
+                            setNonSelected();
 
                     }
                 });
@@ -285,23 +313,41 @@ public class WaterFragment extends Fragment {
                             selectedOption = Integer.parseInt(inputText);
                         }
                         removeWater(selectedOption);
+                        setNonSelected();
                     }
                 });
 
-                alertDialogBuilder.setNeutralButton(android.R.string.no, null);
+                alertDialogBuilder.setNeutralButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        setNonSelected();
+                    }
+                });
 
                 alertDialogBuilder.create();
                 alertDialogBuilder.show();
-
 
             }
 
         });
 
-
         return rootView;
 
+    }
 
+    public void setSelected (LinearLayout layout) {
+        setNonSelected();
+        layout.setBackgroundColor(selectedColor);
+
+    }
+
+    public void setNonSelected (){
+        option1.setBackground(option1Background);
+        option2.setBackground(option2Background);
+        option3.setBackground(option3Background);
+        option4.setBackground(option4Background);
+        option5.setBackground(option5Background);
+        optionCustom.setBackground(optionCustomBackground);
     }
 
     public void addWater(int waterToAdd) {
@@ -323,12 +369,25 @@ public class WaterFragment extends Fragment {
     }
 
     public void updateWaterDisplay() {
-        CharSequence waterSequence = "You Drank " + current_water_intake + " / " + goal_intake + "mL of Water Today";
-        currentWaterTV.setText(waterSequence);
-        //addWaterTN.setText("");
+        if (current_water_intake > 50000) {
+            CharSequence waterSequence = "You Drank 50000+ / " + goal_intake + "mL of Water Today!";
+            currentWaterTV.setText(waterSequence);
+        }
+        else{
+            CharSequence waterSequence = "You Drank " + current_water_intake + " / " + goal_intake + "mL of Water Today";
+            currentWaterTV.setText(waterSequence);
+        }
+
         double progress = ((double) current_water_intake /(double) goal_intake) * 100;
-        progressCircle.setProgress((int)progress);
-        progressText.setText((int)progress + "%");
+        if (progress > 200) {
+            progressCircle.setProgress((int)progress);
+            progressText.setText("200+% ");
+        }
+        else {
+            progressCircle.setProgress((int) progress);
+            progressText.setText((int) progress + "%");
+        }
+
     }
 
     public void removeWater (int waterToRemove) {

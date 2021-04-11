@@ -8,16 +8,16 @@
     <ProgressBar
         android:id="@+id/waterProgressBar"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="250dp"
+        android:layout_width="300dp"
         android:layout_height="150dp"
-        android:layout_centerInParent="true"
+        android:layout_below="@+id/date_title"
+        android:layout_centerHorizontal="true"
         android:indeterminate="false"
         android:max="100"
         android:min="0"
         android:progressDrawable="@drawable/circular"
         android:secondaryProgress="100"
-        android:layout_below="@+id/header_title"
-        app:layout_constraintTop_toBottomOf="@+id/header_title"/>
+        app:layout_constraintTop_toBottomOf="@+id/date_title" />
 
     <!--android:progress="@string/progress"
     <ImageView
@@ -31,15 +31,16 @@
 
     <TextView
         android:id="@+id/progressWaterTV"
-        android:layout_width="450dp"
+        android:layout_width="300dp"
         android:layout_height="150dp"
-        android:gravity="center"
+        android:layout_below="@+id/date_title"
         android:layout_centerHorizontal="true"
-        android:layout_centerInParent="true"
-        android:layout_below="@+id/header_title"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="#FFFFFF"/>
+        android:layout_centerVertical="true"
+        android:fontFamily="@font/open_sans_bold"
+        android:gravity="center"
+        android:textColor="#FFFFFF"
+        android:textSize="25sp"
+        android:textStyle="normal" />
     <!--android:translationY="-100dp"
              android:text="@string/progress_text"
 -->

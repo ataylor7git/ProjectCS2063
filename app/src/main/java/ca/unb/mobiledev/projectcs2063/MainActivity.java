@@ -43,9 +43,12 @@ public class MainActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        openFragment(StepsFragment.newInstance("", ""));
+
         bottomNavigation = findViewById(R.id.bottom_navigation);
+        bottomNavigation.setSelectedItemId(R.id.steps);
+        openFragment(StepsFragment.newInstance("", ""));
         bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
+
         itemRepository = new ItemRepository(getApplication());
         LiveData<Item> item = itemRepository.getGoals();
         item.observe(this, item1 -> {

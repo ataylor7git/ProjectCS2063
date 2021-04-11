@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:scrollbars="vertical">
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout
     android:id="@+id/fragment_water"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -26,41 +25,41 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Water Intake"
-        android:id="@+id/header_title"
+        android:id="@+id/date_title"
         android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="#FFFFFF"
         android:layout_below="@+id/imageView"
+        android:fontFamily="@font/open_sans"
         android:layout_centerHorizontal="true" />
 
-
-    <include layout="@layout/progress_bar_water" />
 
     <TextView
         android:id="@+id/currentWaterTV"
         android:layout_width="match_parent"
         android:layout_height="75dp"
         android:layout_below="@+id/waterProgressBar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="5dp"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
+        android:fontFamily="@font/open_sans"
         android:textSize="24sp" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:id="@+id/info"
-        android:layout_below="@+id/currentWaterTV">
+    <include layout="@layout/progress_bar_water" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginLeft="50dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginRight="50dp"
+            android:layout_below="@id/currentWaterTV"
+            android:layout_centerHorizontal="true"
             android:id="@+id/threeButtons">
 
             <Button
@@ -68,41 +67,59 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/add_drink_button"
                 android:text="add"
+                android:textColor="#03A9F4"
+                android:fontFamily="@font/open_sans_bold"
                 android:layout_weight="1"
                 android:layout_marginLeft="0dp"
                 android:layout_marginRight="20dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"/>
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/custom_clear_button"
+                android:layout_gravity="center_horizontal"/>
 
             <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
                 android:id="@+id/remove_drink_button"
-                android:text="REMOVE"
-                android:layout_weight="1"
-                android:layout_marginLeft="0dp"
-                android:layout_marginRight="20dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"/>
-
-            <Button
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/clear_drink_button"
-                android:text="CLEAR"
-                android:layout_weight="1"
-                android:layout_marginLeft="0dp"
-                android:layout_marginRight="0dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"/>
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/custom_clear_button"
+                android:text="REMOVE"
+                android:fontFamily="@font/open_sans_bold"
+                android:textColor="@android:color/holo_red_light" />
+
 
         </LinearLayout>
-    </LinearLayout>
+
 
     <include layout="@layout/cardview_water" />
 
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:id="@+id/clear_drink_button"
+        android:text="CLEAR ALL DATA"
+        android:fontFamily="@font/open_sans_bold"
+        android:layout_weight="1"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/custom_clear_button"
+        android:layout_below="@+id/cardView"
+        android:layout_centerHorizontal="true"/>
 
-<!--
+    <ImageView
+        android:id="@+id/bottomImageView"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/clear_drink_button"/>
+
+
+    <!--
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -110,13 +127,15 @@
         app:fabSize="normal"
         android:tint="@color/black"
         app:srcCompat="@android:drawable/ic_input_add"
-        android:id="@+id/floatingActionButton"
-        android:layout_marginRight="27dp"
-        android:layout_marginEnd="27dp"
-        android:layout_marginBottom="37dp"
+        android:tooltipText="add or remove custom input!"
+        android:id="@+id/customButton"
+        android:layout_below="@+id/cardView"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
         app:elevation="9dp"
         android:contentDescription="TODO"
         android:focusable="true" />
