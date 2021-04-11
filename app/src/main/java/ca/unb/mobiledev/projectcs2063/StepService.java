@@ -10,7 +10,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
@@ -18,9 +17,8 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-import androidx.lifecycle.LiveData;
 
-import ca.unb.mobiledev.projectcs2063.entity.Item;
+
 import ca.unb.mobiledev.projectcs2063.repository.ItemRepository;
 
 public class StepService extends Service implements SensorEventListener {
