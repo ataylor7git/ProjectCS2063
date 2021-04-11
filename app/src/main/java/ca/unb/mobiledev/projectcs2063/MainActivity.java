@@ -3,6 +3,13 @@ package ca.unb.mobiledev.projectcs2063;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.MenuItem;
 import androidx.annotation.NonNull;
@@ -34,6 +41,10 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private ItemRepository itemRepository;
 
+    public static final String TIME_STAMP_FORMAT = "yyyMMdd_HHmmss";
+    private AlarmManager alarmMgr;
+    private PendingIntent alarmIntent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "on create called");
@@ -42,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setSelectedItemId(R.id.steps);

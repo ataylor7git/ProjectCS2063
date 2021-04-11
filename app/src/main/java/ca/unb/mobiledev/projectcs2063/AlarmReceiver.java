@@ -22,12 +22,12 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Log.i(TAG, "onReceive method called");
 
-        Intent mainIntent = new Intent(context, MainActivity.class);
+        Intent mainIntent = new Intent(context, WaterFragment.class);
         mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent mainPendingIntent = PendingIntent.getActivity(context, 0, mainIntent, 0);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context,"channel_id")
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.water_icon)
                 .setContentTitle("Water Reminder")
                 .setContentText("It's time to drink water")
                 .setPriority(NotificationCompat.PRIORITY_HIGH)

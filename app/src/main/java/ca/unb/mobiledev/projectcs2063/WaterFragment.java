@@ -1,7 +1,13 @@
 package ca.unb.mobiledev.projectcs2063;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -10,6 +16,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,9 +49,7 @@ public class WaterFragment extends Fragment {
     private ProgressBar progressCircle;
     private TextView progressText;
     private TextView currentWaterTV;
-    //private EditText addWaterTN;
     private Button addButton, removeButton, clearButton;
-    //private FloatingActionButton customButton;
 
     private TextView dateDisplay;
     private Calendar calendar;
@@ -52,7 +57,7 @@ public class WaterFragment extends Fragment {
     private String date;
 
     private int goal_intake = 2000;
-    private int current_water_intake = 0;
+    private int current_water_intake, steps = 0;
     private int selectedOption = 0;
 
     LinearLayout option1, option2, option3, option4, option5, optionCustom;
@@ -60,10 +65,11 @@ public class WaterFragment extends Fragment {
     option5Background, optionCustomBackground;
     int selectedColor;
 
-
+    public static final String TIME_STAMP_FORMAT = "yyyMMdd_HHmmss";
+    private AlarmManager alarmMgr;
+    private PendingIntent alarmIntent;
 
     private static ItemRepository itemRepository;
-    private int steps = 0;
 
     public WaterFragment() {
         Log.i(TAG, "water fragment constructer called");
@@ -90,7 +96,28 @@ public class WaterFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+        alarmMgr = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(getContext(), AlarmReceiver.class);
+        alarmIntent = PendingIntent.getBroadcast(getContext(),0,intent, 0);
+
+        alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                SystemClock.elapsedRealtime() + AlarmManager.INTERVAL_HOUR, AlarmManager.INTERVAL_HOUR, alarmIntent);
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Intent.ACTION_BATTERY_OKAY);
+        getContext().registerReceiver(batteryInfoReceiver, intentFilter);
     }
+
+    private BroadcastReceiver batteryInfoReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent.getAction().equals(Intent.ACTION_BATTERY_OKAY)) {
+                alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                        SystemClock.elapsedRealtime() + AlarmManager.INTERVAL_HOUR,
+                        AlarmManager.INTERVAL_HOUR, alarmIntent);
+            }
+        }
+    };
 
     @SuppressLint("ResourceType")
     @Override
@@ -100,7 +127,6 @@ public class WaterFragment extends Fragment {
 
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_water, container, false);
-
 
         currentWaterTV = (TextView) rootView.findViewById(R.id.currentWaterTV);
         progressCircle = (ProgressBar) rootView.findViewById(R.id.waterProgressBar);
@@ -124,36 +150,20 @@ public class WaterFragment extends Fragment {
         option4 = rootView.findViewById(R.id.option4);
         option5 = rootView.findViewById(R.id.option5);
         optionCustom = rootView.findViewById(R.id.optionCustom);
-        //customButton = rootView.findViewById(R.id.customButton);
 
-
-
-
-        //(for now) if the custom TN is empty, then take the selected option isntead and add it
-        //through the add button
         addButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //String add_water = addWaterTN.getText().toString();
-                //if (add_water.isEmpty()){
-                    //add_water = selectedOption + "";
-                    System.out.println("selected option: " + selectedOption);
-                    //System.out.println("add water: " + add_water);
-                //}
-
+                System.out.println("selected option: " + selectedOption);
                 addWater(selectedOption);
                 setNonSelected();
-                //current_water_intake += selectedOption;
-
             }
         });
 
         removeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
                 System.out.println("selected option: " + selectedOption);
                 removeWater(selectedOption);
                 setNonSelected();
-
             }
         });
 
@@ -176,7 +186,6 @@ public class WaterFragment extends Fragment {
             }
         });
 
-
         //Write the current water
         int date = MainActivity.getDate();
         System.out.println("THE DATE TODAY IS: " + MainActivity.getDate());
@@ -192,7 +201,6 @@ public class WaterFragment extends Fragment {
                     steps = item1.getSteps();
                     current_water_intake = item1.getWater();
                     updateWaterDisplay();
-
                 }
 
             });
@@ -209,6 +217,7 @@ public class WaterFragment extends Fragment {
             });
         }
 
+        //save original background
         option1Background = option1.getBackground();
         option2Background = option2.getBackground();
         option3Background = option3.getBackground();
@@ -220,20 +229,9 @@ public class WaterFragment extends Fragment {
         option1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("Clicked! previous selected option is: " + selectedOption);
                 selectedOption = 50;
                 System.out.println("Clicked! new selected option is: " + selectedOption);
-
-                //setSelected(option1);
-                option1.setBackground(option1Background);
-                option2.setBackground(option2Background);
-                option3.setBackground(option3Background);
-                option4.setBackground(option4Background);
-                option5.setBackground(option5Background);
-                optionCustom.setBackground(optionCustomBackground);
-
-                option1.setBackgroundColor(selectedColor);
-
+                setSelected(option1);
             }
         });
 
@@ -241,7 +239,6 @@ public class WaterFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 selectedOption = 125;
-                //option2.setBackgroundColor(Color.rgb(65, 85, 110));
                 setSelected(option2);
             }
         });
@@ -274,7 +271,6 @@ public class WaterFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 setSelected(optionCustom);
-
 
                 LayoutInflater layout = LayoutInflater.from(getActivity());
                 View promptsView = layout.inflate(R.layout.custom_input_dialog, null);
