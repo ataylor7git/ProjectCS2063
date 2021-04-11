@@ -7,6 +7,8 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
+import java.util.List;
+
 import ca.unb.mobiledev.projectcs2063.entity.Item;
 
 /**
@@ -33,4 +35,10 @@ public interface ItemDao {
             "sex = :itemSex  WHERE date = :itemDate")
     int updateItemAll(int itemStep, int itemWater, String itemName, String itemWeight,
                       String itemHeight, String itemAge, boolean itemSex, int itemDate);
+
+    @Query("UPDATE item_table SET steps = :itemStep WHERE date = :itemDate")
+    int updateStepItem(int itemStep, int itemDate);
+
+    @Query("UPDATE item_table SET water = :itemWater WHERE date = :itemDate")
+    int updateWaterItem(int itemWater, int itemDate);
 }

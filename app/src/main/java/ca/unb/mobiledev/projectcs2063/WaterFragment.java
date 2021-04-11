@@ -438,7 +438,7 @@ public class WaterFragment extends Fragment {
         if(itemRepository != null)
         {
             int date = MainActivity.getDate();
-            itemRepository.updateItem(steps, current_water_intake, date);
+            itemRepository.updateWaterItem(current_water_intake, date);
         }
     }
 
