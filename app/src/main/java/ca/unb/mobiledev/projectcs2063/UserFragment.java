@@ -9,9 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
+
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import ca.unb.mobiledev.projectcs2063.entity.Item;
 import ca.unb.mobiledev.projectcs2063.repository.ItemRepository;
@@ -30,8 +34,12 @@ public class UserFragment extends Fragment{
     private int stepGoal;
     private View rootView;
 
-    private EditText sGoalInput;
-    private EditText wGoalInput;
+    private TextInputEditText sGoalInput, wGoalInput;
+    private TextInputEditText nameET, weightET, heightET, ageET;
+    private TextView title;
+    private String name = "";
+    private String weight, height, age = "";
+
     private boolean changed = false;
     private static ItemRepository itemRepository;
 
@@ -73,8 +81,11 @@ public class UserFragment extends Fragment{
             ((ViewGroup) rootView.getParent()).removeView(rootView);
         }
 
+        title = rootView.findViewById(R.id.title);
+
         //The step goal edit text
-        sGoalInput = (EditText) rootView.findViewById(R.id.stepGoalTN2);
+        TextInputLayout sGoalLayout = rootView.findViewById(R.id.step_goal);
+        sGoalInput = (TextInputEditText) rootView.findViewById(R.id.step_goalET);
         sGoalInput.addTextChangedListener(new TextWatcher() {
 
             public void afterTextChanged(Editable s) {
@@ -97,7 +108,8 @@ public class UserFragment extends Fragment{
         });
 
         //The water goal edit text
-        wGoalInput = (EditText) rootView.findViewById(R.id.waterGoalTN);
+        TextInputLayout wGoalLayout = rootView.findViewById(R.id.water_goal);
+        wGoalInput = (TextInputEditText) rootView.findViewById(R.id.water_goalET);
         wGoalInput.addTextChangedListener(new TextWatcher() {
 
             public void afterTextChanged(Editable s) {
@@ -119,17 +131,139 @@ public class UserFragment extends Fragment{
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
         });
 
+        TextInputLayout nameLayout = rootView.findViewById(R.id.name);
+        nameET = (TextInputEditText) rootView.findViewById(R.id.nameET);
+        nameET.addTextChangedListener(new TextWatcher() {
+
+            public void afterTextChanged(Editable s) {
+
+
+                if(nameET.getText().toString().isEmpty() )
+                {
+                    name = "";
+                    System.out.println("Empty");
+                    title.setText("Settings");
+                }
+                else {
+                    String nameIn = nameET.getText().toString();
+                    System.out.println("nameIn is : " + nameIn);
+                    name = nameIn;
+                    System.out.println("Title Name is: " + name);
+                    title.setText(name + "'s Settings");
+                }
+                changed = true;
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+        });
+
+        TextInputLayout weightLayout = rootView.findViewById(R.id.weight);
+        weightET = (TextInputEditText) rootView.findViewById(R.id.weightET);
+        weightET.addTextChangedListener(new TextWatcher() {
+
+            public void afterTextChanged(Editable s) {
+
+
+                if(weightET.getText().toString().equals("") )
+                {
+                    weight = "";
+                    weightLayout.setError("");
+                }
+                else if (weightET.getText().toString().equals("0")) {
+                    weightLayout.setError("Input cannot be zero!");
+                    weight = "";
+                }
+                else {
+                    weightLayout.setError("");
+                    String weightIn = weightET.getText().toString();
+                    weight = weightIn;
+                }
+                changed = true;
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+        });
+
+        TextInputLayout heightLayout = rootView.findViewById(R.id.height);
+        heightET = (TextInputEditText) rootView.findViewById(R.id.heightET);
+        heightET.addTextChangedListener(new TextWatcher() {
+
+            public void afterTextChanged(Editable s) {
+
+
+                if(heightET.getText().toString().equals(""))
+                {
+                    height = "";
+                    heightLayout.setError("");
+                }
+                else if (heightET.getText().toString().equals("0")) {
+                    heightLayout.setError("Input cannot be zero!");
+                    height = "";
+                }
+                else {
+                    heightLayout.setError("");
+                    String heightIn = heightET.getText().toString();
+                    height = heightIn;
+                }
+                changed = true;
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+        });
+
+        TextInputLayout ageLayout = rootView.findViewById(R.id.age);
+        ageET = (TextInputEditText) rootView.findViewById(R.id.ageET);
+        ageET.addTextChangedListener(new TextWatcher() {
+
+            public void afterTextChanged(Editable s) {
+
+
+                if(ageET.getText().toString().equals(""))
+                {
+                    age = "";
+                    ageLayout.setError("");
+                }
+                else if (ageET.getText().toString().equals("0")) {
+                    ageLayout.setError("Input cannot be zero!");
+                    age = "";
+                }
+                else {
+                    ageLayout.setError("");
+                    String ageIn = ageET.getText().toString();
+                    age = ageIn;
+                }
+                changed = true;
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+        });
+
+
         LiveData<Item> item = itemRepository.getGoals();
         item.observe(this, item1 -> {
             if(item1 != null) {
                 stepGoal = item1.getSteps();
                 waterGoal = item1.getWater();
+                name = item1.getName();
+                System.out.println("name in  item observe is: " + name);
+                age = item1.getAge();
+                weight = item1.getWeight();
+                height = item1.getHeight();
 
-                CharSequence goalSequence = stepGoal + "";
-                sGoalInput.setText(goalSequence);
-
-                goalSequence = waterGoal + "";
-                wGoalInput.setText(goalSequence);
+                sGoalInput.setText(stepGoal + "");
+                wGoalInput.setText(waterGoal + "");
+                nameET.setText(name);
+                ageET.setText(age);
+                weightET.setText(weight);
+                heightET.setText(height);
             }
         });
 
@@ -148,7 +282,7 @@ public class UserFragment extends Fragment{
         if(changed && itemRepository != null)
         {
             Log.i(TAG, "Update");
-            itemRepository.updateItem(stepGoal, waterGoal, -1);
+            itemRepository.updateItemAll(stepGoal, waterGoal, name, weight, height, age, false, -1);
             changed = false;
         }
         else

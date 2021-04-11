@@ -1,154 +1,176 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fragment_user"
-    android:layout_width="match_parent"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
-    android:background="#252627"
-    tools:context="UserFragment">
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:scrollbars="vertical">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:id="@+id/imageView" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="User Info"
-        android:textColor="#FFFFFF"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_below="@+id/imageView"
-        android:layout_centerHorizontal="true"/>
-
-    <LinearLayout
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/fragment_user"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_marginTop="50dp"
-        android:layout_marginBottom="50dp">
+        android:background="#252627"
+        android:padding="20dp"
+        tools:context="UserFragment">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/title"
+            android:layout_alignParentTop="true"
+            android:text="Settings"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="10dp"/>
 
 
-        <LinearLayout
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:src="@drawable/settings_icon"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/imageView"
+            android:layout_below="@+id/title"/>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                app:startIconDrawable="@drawable/user_icon"
+                app:startIconContentDescription="Testing testing..."
+                app:errorEnabled="true"
+                app:errorContentDescription="This is an error"
+                app:errorTextColor="@color/design_default_color_error"
+                android:layout_below="@+id/imageView">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/nameET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter Name"
+                    android:inputType="textPersonName" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/weight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
+            app:errorEnabled="true"
+            app:errorContentDescription="This is an error"
+            app:errorTextColor="@color/design_default_color_error"
+            app:startIconDrawable="@drawable/weight_icon"
+            android:layout_below="@+id/name">
 
-            <TextView
-                android:id="@+id/firstNameTV"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="First Name: "
-                android:textColor="#FFFFFF"
-                android:textSize="24sp" />
-
-            <EditText
-                android:id="@+id/firstNameET"
-                android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/weightET"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#FFFFFF"
-                android:ems="10"
-                android:inputType="text" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/lastNameTV"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Last Name: "
-                android:textColor="#FFFFFF"
-                android:textSize="24sp" />
-
-            <EditText
-                android:id="@+id/lastNameET"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:textColor="#FFFFFF"
-                android:inputType="text" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center"
-            android:layout_below="@+id/currentStepsTV">
-
-            <TextView
-                android:id="@+id/stepGoalTV2"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Step Goal: "
-                android:textColor="#FFFFFF"
-                android:textSize="24sp" />
-
-            <EditText
-                android:id="@+id/stepGoalTN2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:textColor="#FFFFFF"
+                android:hint="Enter Weight (kg) "
                 android:inputType="number" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        </LinearLayout>
-
-        <LinearLayout
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/height"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
+            app:startIconDrawable="@drawable/height_icon2"
+            app:errorEnabled="true"
+            app:errorContentDescription="This is an error"
+            app:errorTextColor="@color/design_default_color_error"
+            android:layout_below="@+id/weight">
 
-            <TextView
-                android:id="@+id/waterGoalTV"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text=" Water Goal (ml): "
-                android:textColor="#FFFFFF"
-                android:textSize="24sp" />
-
-            <EditText
-                android:id="@+id/waterGoalTN"
-                android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/heightET"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:textColor="#FFFFFF"
+                android:hint="Enter Height (cm) "
                 android:inputType="number" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        </LinearLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/age"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
+            app:startIconDrawable="@drawable/age_icon"
+            app:errorEnabled="true"
+            app:errorContentDescription="This is an error"
+            app:errorTextColor="@color/design_default_color_error"
+            android:layout_below="@+id/height">
 
-    </LinearLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ageET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter age"
+                android:inputType="number" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-</RelativeLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/water_goal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
+            app:startIconDrawable="@drawable/waterdrop_icon"
+            app:errorEnabled="true"
+            app:errorContentDescription="This is an error"
+            app:errorTextColor="@color/design_default_color_error"
+            android:layout_below="@+id/age">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/water_goalET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter Water Goal (ml)"
+                android:inputType="number" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/step_goal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
+            app:startIconDrawable="@drawable/footstep_icon"
+            app:errorEnabled="true"
+            app:errorContentDescription="This is an error"
+            app:errorTextColor="@color/design_default_color_error"
+            android:layout_below="@+id/water_goal">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/step_goalET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter Step Goal"
+                android:inputType="number" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+    </RelativeLayout>
+
+</androidx.core.widget.NestedScrollView>

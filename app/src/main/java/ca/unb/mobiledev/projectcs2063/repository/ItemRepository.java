@@ -68,4 +68,12 @@ public class ItemRepository {
             itemDao.updateWaterItem(itemWater, itemDate);
         });
     }
+
+    public void updateItemAll(int itemStep, int itemWater, String itemName, String itemWeight,
+                              String itemHeight, String itemAge, boolean itemSex, int itemDate)
+    {
+        AppDatabase.databaseWriterExecutor.execute(() -> {
+            itemDao.updateItemAll(itemStep, itemWater, itemName, itemWeight, itemHeight, itemAge, itemSex, itemDate);
+        });
+    }
 }

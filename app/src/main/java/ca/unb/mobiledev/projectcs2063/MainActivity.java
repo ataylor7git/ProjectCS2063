@@ -3,6 +3,13 @@ package ca.unb.mobiledev.projectcs2063;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.MenuItem;
 import androidx.annotation.NonNull;
@@ -34,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private ItemRepository itemRepository;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "on create called");
@@ -42,10 +50,14 @@ public class MainActivity extends AppCompatActivity {
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setTitle("Fitness App");
 
-        openFragment(StepsFragment.newInstance("", ""));
+
         bottomNavigation = findViewById(R.id.bottom_navigation);
+        bottomNavigation.setSelectedItemId(R.id.steps);
+        openFragment(StepsFragment.newInstance("", ""));
         bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
+
         itemRepository = new ItemRepository(getApplication());
         LiveData<Item> item = itemRepository.getGoals();
         item.observe(this, item1 -> {
@@ -56,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
         StepsFragment.setRepository(itemRepository);
         UserFragment.setRepository(itemRepository);
 
-        setTitle("Fitness App");
 
     }
 
@@ -77,15 +88,15 @@ public class MainActivity extends AppCompatActivity {
                     switch (item.getItemId()) {
                         case R.id.steps:
                             openFragment(StepsFragment.newInstance("", ""));
-                            toolbar.setTitle(R.string.steps_name);
+                            //toolbar.setTitle(R.string.steps_name);
                             return true;
                         case R.id.water:
                             openFragment(WaterFragment.newInstance("", ""));
-                            toolbar.setTitle(R.string.water_name);
+                            //toolbar.setTitle(R.string.water_name);
                             return true;
                         case R.id.user:
                             openFragment(UserFragment.newInstance("", ""));
-                            toolbar.setTitle(R.string.user_name);
+                            //toolbar.setTitle(R.string.user_name);
                             return true;
                     }
                     return false;

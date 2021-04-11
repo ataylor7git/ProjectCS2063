@@ -6,13 +6,13 @@
     <ProgressBar
         android:id="@+id/stepProgressBar"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="250dp"
+        android:layout_width="300dp"
         android:layout_height="150dp"
         android:layout_below="@+id/stepsTitle"
         android:layout_centerInParent="true"
         android:indeterminate="false"
         android:max="100"
-        android:progressDrawable="@drawable/circular"
+        android:progressDrawable="@drawable/circular_steps"
         android:secondaryProgress="100" />
 
     <!--android:progress="@string/progress"
@@ -32,13 +32,13 @@
 
     <TextView
         android:id="@+id/progressStepsTV"
-        android:layout_width="450dp"
+        android:layout_width="300dp"
         android:layout_height="150dp"
         android:gravity="center"
         android:layout_centerHorizontal="true"
         android:layout_centerInParent="true"
-        android:textStyle="bold"
         android:layout_below="@+id/stepsTitle"
-        android:textSize="20sp"
-        android:textColor="#FFFFFF"/>
+        android:fontFamily="@font/open_sans_bold"
+        android:textSize="25sp"
+        android:textStyle="normal" />
 </merge>

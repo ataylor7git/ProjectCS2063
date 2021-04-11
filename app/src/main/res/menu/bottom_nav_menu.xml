@@ -4,7 +4,7 @@
     <item
         android:id="@+id/water"
         android:title="Water"
-        android:icon="@drawable/water_icon"/>
+        android:icon="@drawable/water"/>
     <!-- add some sort of icon for each located under res-drawable folder (create new image asset)
     code will look something like this android:icon="@drawable/ic_person_foreground"/> -->
     <item
