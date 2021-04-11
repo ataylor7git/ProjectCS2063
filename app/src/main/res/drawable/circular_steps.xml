@@ -30,9 +30,9 @@
                     android:pivotY="50%"
                     android:toDegrees="360" />
                 <gradient
-                    android:centerColor="#3F51B5"
-                    android:endColor="#2196F3"
-                    android:startColor="#0AD8F3"
+                    android:centerColor="#FF5722"
+                    android:endColor="#FF9800"
+                    android:startColor="#FFC107"
                     android:type="sweep" />
             </shape>
         </rotate>

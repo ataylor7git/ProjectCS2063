@@ -258,23 +258,12 @@ public class UserFragment extends Fragment{
                 weight = item1.getWeight();
                 height = item1.getHeight();
 
-                CharSequence goalSequence = stepGoal + "";
-                sGoalInput.setText(goalSequence);
-
-                goalSequence = waterGoal + "";
-                wGoalInput.setText(goalSequence);
-
-                goalSequence = name;
-                nameET.setText(goalSequence);
-
-                goalSequence = age;
-                ageET.setText(goalSequence);
-
-                goalSequence = weight;
-                weightET.setText(goalSequence);
-
-                goalSequence = height;
-                heightET.setText(goalSequence);
+                sGoalInput.setText(stepGoal + "");
+                wGoalInput.setText(waterGoal + "");
+                nameET.setText(name);
+                ageET.setText(age);
+                weightET.setText(weight);
+                heightET.setText(height);
             }
         });
 

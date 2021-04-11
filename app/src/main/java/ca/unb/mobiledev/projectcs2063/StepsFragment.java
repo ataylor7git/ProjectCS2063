@@ -14,6 +14,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import ca.unb.mobiledev.projectcs2063.entity.Item;
 import ca.unb.mobiledev.projectcs2063.repository.ItemRepository;
 
@@ -26,6 +30,7 @@ public class StepsFragment extends Fragment{
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private TextView stepsTitle;
     private TextView currentStepTV;
     private TextView progressText;
     private ProgressBar progressBar;
@@ -82,6 +87,14 @@ public class StepsFragment extends Fragment{
 
         progressBar = (ProgressBar) rootView.findViewById(R.id.stepProgressBar);
         progressText = (TextView) rootView.findViewById(R.id.progressStepsTV);
+        stepsTitle = (TextView) rootView.findViewById(R.id.stepsTitle);
+
+        //display the date
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM d, yyyy" );
+        String dateString = dateFormat.format(calendar.getTime());
+        stepsTitle.setText(dateString);
+
 
         //Write the current steps
         int date = MainActivity.getDate();

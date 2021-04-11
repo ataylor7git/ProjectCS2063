@@ -41,9 +41,6 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private ItemRepository itemRepository;
 
-    public static final String TIME_STAMP_FORMAT = "yyyMMdd_HHmmss";
-    private AlarmManager alarmMgr;
-    private PendingIntent alarmIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setTitle("Fitness App");
+
 
         bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setSelectedItemId(R.id.steps);
@@ -69,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
         StepsFragment.setRepository(itemRepository);
         UserFragment.setRepository(itemRepository);
 
-        setTitle("Fitness App");
 
     }
 
@@ -90,15 +88,15 @@ public class MainActivity extends AppCompatActivity {
                     switch (item.getItemId()) {
                         case R.id.steps:
                             openFragment(StepsFragment.newInstance("", ""));
-                            toolbar.setTitle(R.string.steps_name);
+                            //toolbar.setTitle(R.string.steps_name);
                             return true;
                         case R.id.water:
                             openFragment(WaterFragment.newInstance("", ""));
-                            toolbar.setTitle(R.string.water_name);
+                            //toolbar.setTitle(R.string.water_name);
                             return true;
                         case R.id.user:
                             openFragment(UserFragment.newInstance("", ""));
-                            toolbar.setTitle(R.string.user_name);
+                            //toolbar.setTitle(R.string.user_name);
                             return true;
                     }
                     return false;

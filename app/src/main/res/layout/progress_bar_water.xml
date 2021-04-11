@@ -38,7 +38,6 @@
         android:layout_centerVertical="true"
         android:fontFamily="@font/open_sans_bold"
         android:gravity="center"
-        android:textColor="#FFFFFF"
         android:textSize="25sp"
         android:textStyle="normal" />
     <!--android:translationY="-100dp"
