@@ -56,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
         StepsFragment.setRepository(itemRepository);
         UserFragment.setRepository(itemRepository);
 
+        setTitle("Fitness App");
+
     }
 
     public void openFragment(Fragment fragment) {

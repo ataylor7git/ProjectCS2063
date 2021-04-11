@@ -1,6 +1,7 @@
 package ca.unb.mobiledev.projectcs2063.repository;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -51,6 +52,20 @@ public class ItemRepository {
     {
         AppDatabase.databaseWriterExecutor.execute(() -> {
             itemDao.updateItem(itemStep, itemWater, itemDate);
+        });
+    }
+
+    public void updateStepItem(int itemStep, int itemDate)
+    {
+        AppDatabase.databaseWriterExecutor.execute(() -> {
+            itemDao.updateStepItem(itemStep, itemDate);
+        });
+    }
+
+    public void updateWaterItem(int itemWater, int itemDate)
+    {
+        AppDatabase.databaseWriterExecutor.execute(() -> {
+            itemDao.updateWaterItem(itemWater, itemDate);
         });
     }
 }
