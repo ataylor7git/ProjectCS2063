@@ -19,7 +19,8 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="20dp"
+        android:contentDescription=" " />
 
     <TextView
         android:layout_width="wrap_content"
@@ -63,7 +64,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/add_drink_button"
-                android:text="add"
+                android:text="@string/add"
                 android:fontFamily="@font/open_sans_bold"
                 android:layout_weight="1"
                 android:layout_marginLeft="0dp"
@@ -82,7 +83,7 @@
                 android:layout_marginBottom="5dp"
                 android:layout_weight="1"
                 android:background="@drawable/custom_remove_button"
-                android:text="REMOVE"
+                android:text="@string/remove"
                 android:fontFamily="@font/open_sans_bold" />
 
 
@@ -95,7 +96,7 @@
         android:layout_width="150dp"
         android:layout_height="50dp"
         android:id="@+id/clear_drink_button"
-        android:text="CLEAR ALL DATA"
+        android:text="@string/clear_all_data"
         android:fontFamily="@font/open_sans_bold"
         android:layout_weight="1"
         android:layout_marginTop="10dp"
@@ -110,7 +111,8 @@
         android:layout_height="50dp"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
-        android:layout_below="@+id/clear_drink_button"/>
+        android:layout_below="@+id/clear_drink_button"
+        android:contentDescription=" " />
 
 
 </RelativeLayout>

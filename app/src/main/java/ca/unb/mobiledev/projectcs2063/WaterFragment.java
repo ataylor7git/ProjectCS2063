@@ -76,7 +76,7 @@ public class WaterFragment extends Fragment {
         private PendingIntent alarmIntent;
 
         private static ItemRepository itemRepository;
-        private boolean isGoalMet = false;
+        private boolean isGoalMet;
 
         public WaterFragment() {
             Log.i(TAG, "water fragment constructer called");
@@ -84,8 +84,6 @@ public class WaterFragment extends Fragment {
         }
 
         public static WaterFragment newInstance(String param1, String param2) {
-            //System.out.println("param is" + param1);
-            //System.out.println(param2);
             WaterFragment fragment = new WaterFragment();
             Bundle args = new Bundle();
             args.putString(ARG_PARAM1, param1);
@@ -107,12 +105,15 @@ public class WaterFragment extends Fragment {
             Intent intent = new Intent(getContext(), AlarmReceiver.class);
             alarmIntent = PendingIntent.getBroadcast(getContext(),0,intent, 0);
 
-            if (!isGoalMet) {
-                System.out.println("onReceive Broadcast Receiver, goal hasnt been met");
+            if (!isGoalMet()) {
                 alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                        SystemClock.elapsedRealtime() + AlarmManager.INTERVAL_HOUR, AlarmManager.INTERVAL_HOUR, alarmIntent);
-
+                        SystemClock.elapsedRealtime() + AlarmManager.INTERVAL_HOUR,
+                        AlarmManager.INTERVAL_HOUR, alarmIntent);
             }
+            else {
+                alarmMgr.cancel(alarmIntent);
+            }
+
 
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(Intent.ACTION_BATTERY_OKAY);
@@ -122,13 +123,21 @@ public class WaterFragment extends Fragment {
         private BroadcastReceiver batteryInfoReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                if(intent.getAction().equals(Intent.ACTION_BATTERY_OKAY)) {
-                    if (!isGoalMet) {
-                        System.out.println("onReceive Broadcast Receiver, goal hasnt been met");
-                        alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                                SystemClock.elapsedRealtime() + AlarmManager.INTERVAL_HOUR, AlarmManager.INTERVAL_HOUR, alarmIntent);
-                    }
+                if (intent.getAction().equals(Intent.ACTION_BATTERY_LOW)) {
+                    alarmMgr.cancel(alarmIntent);
                 }
+                if(intent.getAction().equals(Intent.ACTION_BATTERY_OKAY)) {
+                    if (isGoalMet()){
+                        alarmMgr.cancel(alarmIntent);
+                    }
+                    if (!isGoalMet()) {
+                        alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                                SystemClock.elapsedRealtime() + AlarmManager.INTERVAL_HOUR,
+                                AlarmManager.INTERVAL_HOUR, alarmIntent);
+                    }
+
+                }
+                
             }
         };
 
@@ -164,44 +173,30 @@ public class WaterFragment extends Fragment {
             option5 = rootView.findViewById(R.id.option5);
             optionCustom = rootView.findViewById(R.id.optionCustom);
 
-            addButton.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    System.out.println("selected option: " + selectedOption);
-                    addWater(selectedOption);
-                    setNonSelected();
-                }
+            addButton.setOnClickListener(v -> {
+                addWater(selectedOption);
+                setNonSelected();
             });
 
-            removeButton.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    System.out.println("selected option: " + selectedOption);
-                    removeWater(selectedOption);
-                    setNonSelected();
-                }
+            removeButton.setOnClickListener(v -> {
+                removeWater(selectedOption);
+                setNonSelected();
             });
 
-            clearButton.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    AlertDialog.Builder clearAlert = new AlertDialog.Builder(getContext());
-                    clearAlert.setMessage("Warning! This will permanently delete your data for today!");
-                    clearAlert.setCancelable(true);
+            clearButton.setOnClickListener(v -> {
+                AlertDialog.Builder clearAlert = new AlertDialog.Builder(getContext());
+                clearAlert.setMessage("Warning! This will permanently delete your data for today!");
+                clearAlert.setCancelable(true);
 
-                    clearAlert.setPositiveButton("Delete my data", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            clearWaterData();
-                        }
-                    });
+                clearAlert.setPositiveButton("Delete my data", (dialog, which) -> clearWaterData());
 
-                    clearAlert.setNeutralButton(android.R.string.cancel, null);
-                    clearAlert.create();
-                    clearAlert.show();
-                }
+                clearAlert.setNeutralButton(android.R.string.cancel, null);
+                clearAlert.create();
+                clearAlert.show();
             });
 
             //Write the current water
             int date = MainActivity.getDate();
-            System.out.println("THE DATE TODAY IS: " + MainActivity.getDate());
             if(itemRepository != null) {
                 LiveData<Item> item = itemRepository.getRecordByDate(date);
                 item.observe(
@@ -223,7 +218,6 @@ public class WaterFragment extends Fragment {
                 goalItem.observe(this, item1 -> {
                     if (item1 != null) {
                         goal_intake = item1.getWater();
-
                         updateWaterDisplay();
                     }
 
@@ -239,104 +233,73 @@ public class WaterFragment extends Fragment {
             optionCustomBackground = optionCustom.getBackground();
             selectedColor = Color.rgb(60, 80, 100);
 
-            option1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    selectedOption = 50;
-                    System.out.println("Clicked! new selected option is: " + selectedOption);
-                    setSelected(option1);
-                }
+            option1.setOnClickListener(v -> {
+                selectedOption = 50;
+                setSelected(option1);
             });
 
-            option2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    selectedOption = 125;
-                    setSelected(option2);
-                }
+            option2.setOnClickListener(v -> {
+                selectedOption = 125;
+                setSelected(option2);
             });
 
-            option3.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    selectedOption = 250;
-                    setSelected(option3);
-                }
+            option3.setOnClickListener(v -> {
+                selectedOption = 250;
+                setSelected(option3);
             });
 
-            option4.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    selectedOption = 500;
-                    setSelected(option4);
-                }
+            option4.setOnClickListener(v -> {
+                selectedOption = 500;
+                setSelected(option4);
             });
 
-            option5.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    selectedOption = 1000;
-                    setSelected(option5);
-                }
+            option5.setOnClickListener(v -> {
+                selectedOption = 1000;
+                setSelected(option5);
             });
 
-            optionCustom.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    setSelected(optionCustom);
+            optionCustom.setOnClickListener((View.OnClickListener) v -> {
+                setSelected(optionCustom);
 
-                    LayoutInflater layout = LayoutInflater.from(getActivity());
-                    View promptsView = layout.inflate(R.layout.custom_input_dialog, null);
-                    TextInputEditText userInput = (TextInputEditText) promptsView.findViewById(R.id.customInputET);
+                LayoutInflater layout = LayoutInflater.from(getActivity());
+                View promptsView = layout.inflate(R.layout.custom_input_dialog, null);
+                TextInputEditText userInput = (TextInputEditText) promptsView.findViewById(R.id.customInputET);
 
-                    android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(getContext());
-                    alertDialogBuilder.setView(promptsView);
+                android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(getContext());
+                alertDialogBuilder.setView(promptsView);
 
-                    alertDialogBuilder.setPositiveButton("ADD", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
-                                String inputText = userInput.getText().toString();
+                alertDialogBuilder.setPositiveButton("ADD", (dialog, id) -> {
+                        String inputText = userInput.getText().toString();
 
-                                if (inputText.equals("")) {
-                                    selectedOption = 0;
-                                }
-                                else {
-                                    selectedOption = Integer.parseInt(inputText);
-                                }
-
-                                addWater(selectedOption);
-                                setNonSelected();
-
+                        if (inputText.equals("")) {
+                            selectedOption = 0;
                         }
-                    });
-
-                    alertDialogBuilder.setNegativeButton("REMOVE", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
-                            String inputText = userInput.getText().toString();
-
-                            if (inputText.equals("")) {
-                                selectedOption = 0;
-                            }
-                            else {
-                                selectedOption = Integer.parseInt(inputText);
-                            }
-                            removeWater(selectedOption);
-                            setNonSelected();
+                        else {
+                            selectedOption = Integer.parseInt(inputText);
                         }
-                    });
 
-                    alertDialogBuilder.setNeutralButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            setNonSelected();
-                        }
-                    });
+                        addWater(selectedOption);
+                        setNonSelected();
 
-                    alertDialogBuilder.create();
-                    alertDialogBuilder.show();
+                });
 
-                }
+                alertDialogBuilder.setNegativeButton("REMOVE", (dialog, id) -> {
+                    String inputText = userInput.getText().toString();
+
+                    if (inputText.equals("")) {
+                        selectedOption = 0;
+                    }
+                    else {
+                        selectedOption = Integer.parseInt(inputText);
+                    }
+                    removeWater(selectedOption);
+                    setNonSelected();
+                });
+
+                alertDialogBuilder.setNeutralButton(android.R.string.cancel, (dialog, which) -> setNonSelected());
+
+                alertDialogBuilder.create();
+                alertDialogBuilder.show();
 
             });
 
@@ -347,7 +310,6 @@ public class WaterFragment extends Fragment {
         public void setSelected (LinearLayout layout) {
             setNonSelected();
             layout.setBackgroundColor(selectedColor);
-
         }
 
         public void setNonSelected (){
@@ -375,29 +337,32 @@ public class WaterFragment extends Fragment {
                 itemRepository.updateItem(steps, current_water_intake, date);
             }
             selectedOption = 0;
+            dispatchNotification();
 
         }
 
 
         public void updateWaterDisplay() {
+            CharSequence waterSequence;
             if (current_water_intake > 50000) {
-                CharSequence waterSequence = "You drank 50000+ / " + goal_intake + "mL of water today!";
-                currentWaterTV.setText(waterSequence);
+                waterSequence = "You drank 50000+ / " + goal_intake + "mL of water today!";
 
             }
             else{
-                CharSequence waterSequence = "You drank " + current_water_intake + " / " + goal_intake + "mL of water today!";
-                currentWaterTV.setText(waterSequence);
+                waterSequence = "You drank " + current_water_intake + " / " + goal_intake + "mL of water today!";
             }
+            currentWaterTV.setText(waterSequence);
             double progress = ((double) current_water_intake /(double) goal_intake) * 100;
-            dispatchNotification();
+            CharSequence percentage;
             if (progress > 200) {
+                percentage = "200+%";
                 progressCircle.setProgress((int)progress);
-                progressText.setText("200+% ");
+                progressText.setText(percentage);
             }
             else {
                 progressCircle.setProgress((int) progress);
-                progressText.setText((int) progress + "%");
+                percentage = (int) progress + "%";
+                progressText.setText(percentage);
             }
 
         }
@@ -423,6 +388,7 @@ public class WaterFragment extends Fragment {
                 itemRepository.updateItem(steps, current_water_intake, date);
             }
             selectedOption = 0;
+            isGoalMet();
         }
 
         public void clearWaterData () {
@@ -437,6 +403,7 @@ public class WaterFragment extends Fragment {
                 itemRepository.updateItem(steps, current_water_intake, date);
             }
             selectedOption = 0;
+            isGoalMet();
         }
 
         public int getGoalIntake(){
@@ -447,39 +414,46 @@ public class WaterFragment extends Fragment {
                 }
 
             });
+            isGoalMet();
             return goal_intake;
          }
 
-    public void dispatchNotification() {
-        double progress = ((double) current_water_intake / (double) goal_intake) * 100;
-        if (progress >= 100) {
-            isGoalMet = true;
-            System.out.println("key Progress is: " + progress);
-            System.out.println("key water intake is: " + current_water_intake +
-                    "goal intake is: " + goal_intake);
-            System.out.println("key: pulled fro mdatabase, goal intake isL " + getGoalIntake());
-            System.out.println("key: isGoalMet has a value of: " + isGoalMet);
-            Intent sendLevel = new Intent();
-            sendLevel.setAction("GET_WATER");
-            this.getContext().sendBroadcast(sendLevel);
+         public boolean isGoalMet(){
+             double progress = ((double) current_water_intake / (double) goal_intake) * 100;
+             if (progress >= 100) {
+                 isGoalMet = true;
+                 alarmMgr.cancel(alarmIntent);
+             }
+             else {
+                 alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                         SystemClock.elapsedRealtime() + AlarmManager.INTERVAL_HOUR, AlarmManager.INTERVAL_HOUR, alarmIntent);
+                 isGoalMet = false;
+             }
+             return isGoalMet;
+         }
 
-            AlarmReceiver.createWaterNotificationChannel(getContext());
-            NotificationCompat.Builder builder2 = new NotificationCompat.Builder(getContext(), WATERCHANNELID)
-                    .setContentTitle("Congratulations")
-                    .setContentText("You have reached your daily water goal!")
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                    .setAutoCancel(true);
+        public void dispatchNotification() {
+            if (isGoalMet()) {
+                Intent sendLevel = new Intent();
+                sendLevel.setAction("GET_WATER");
+                this.getContext().sendBroadcast(sendLevel);
 
-            Notification notif = builder2.setOngoing(false)
-                    .setSmallIcon(R.drawable.water)
-                    .build();
-            NotificationManagerCompat notificationManager2 = NotificationManagerCompat.from(getContext());
-            notificationManager2.notify(1, notif);
+                AlarmReceiver.createWaterNotificationChannel(getContext());
+                NotificationCompat.Builder builder2 = new NotificationCompat.Builder(getContext(), WATERCHANNELID)
+                        .setContentTitle("Congratulations")
+                        .setContentText("You have reached your daily water goal!")
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setAutoCancel(true);
+
+                Notification notif = builder2.setOngoing(false)
+                        .setSmallIcon(R.drawable.water)
+                        .build();
+                NotificationManagerCompat notificationManager2 = NotificationManagerCompat.from(getContext());
+                notificationManager2.notify(1, notif);
+            }
+
+
         }
-    }
-
-
-
 
         public static void setRepository(ItemRepository ir)
         {
@@ -494,9 +468,6 @@ public class WaterFragment extends Fragment {
             {
                 int date = MainActivity.getDate();
                 itemRepository.updateWaterItem(current_water_intake, date);
-                //dispatchNotification();
             }
         }
-
-
 }
