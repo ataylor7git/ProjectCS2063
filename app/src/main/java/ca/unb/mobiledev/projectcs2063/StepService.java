@@ -23,7 +23,7 @@ import ca.unb.mobiledev.projectcs2063.repository.ItemRepository;
 
 public class StepService extends Service implements SensorEventListener {
     private StepDetector detector = StepsFragment.getDetector();
-    private final double STEPTHRESH = 12.9;
+    private final double STEPTHRESH = 14;
     private final static String TAG = "INFO Steps Detector";
     private final String CHANNELID = "StepServiceNotif";
     private final String STEPCHANNELID = "StepServiceNotif";
