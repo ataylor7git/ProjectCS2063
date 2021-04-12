@@ -3,18 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/water"
-        android:title="Water"
-        android:icon="@drawable/water"/>
-    <!-- add some sort of icon for each located under res-drawable folder (create new image asset)
-    code will look something like this android:icon="@drawable/ic_person_foreground"/> -->
+        android:title="@string/water"
+        android:icon="@drawable/waterdrop_icon"/>
+
     <item
         android:id="@+id/steps"
-        android:title="Steps"
+        android:title="@string/steps"
         android:icon="@drawable/steps_icon"/>
 
     <item
         android:id="@+id/user"
-        android:title="User"
+        android:title="@string/user"
         android:icon="@drawable/settings_icon"/>
 
 </menu>

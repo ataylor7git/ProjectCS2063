@@ -25,7 +25,6 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Log.i(TAG, "onReceive method called");
 
-
         Intent mainIntent = new Intent(context, WaterFragment.class);
         mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent mainPendingIntent = PendingIntent.getActivity(context, 0, mainIntent, 0);
@@ -49,7 +48,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             CharSequence name = "Water Reminder";
             String description = "It's time to drink water";
             int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel channel = new NotificationChannel(WATERCHANNELID, name, importance);
+            NotificationChannel channel = new NotificationChannel("channel_id", name, importance);
             channel.setDescription(description);
             NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.createNotificationChannel(channel);

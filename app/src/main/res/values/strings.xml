@@ -3,6 +3,19 @@
     <string name="water_name">Water Tracker </string>
     <string name="steps_name">Step Tracker </string>
     <string name="user_name">User Settings</string>
+    <string name="water">Water</string>
+    <string name="steps">Steps</string>
+    <string name="user">User</string>
+    <string name="settings">Settings</string>
+    <string name="enter_name">Enter Name</string>
+    <string name="enter_weight_kg">Enter Weight (kg)</string>
+    <string name="enter_height_cm">Enter Height (cm)</string>
+    <string name="enter_age">Enter age</string>
+    <string name="enter_water_goal_ml">Enter Water Goal (ml)</string>
+    <string name="enter_step_goal">Enter Step Goal</string>
+    <string name="add">add</string>
+    <string name="remove">REMOVE</string>
+    <string name="clear_all_data">CLEAR ALL DATA</string>
 
 
 </resources>
