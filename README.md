@@ -1,6 +1,8 @@
 # ProjectCS2063
 The CS2063 app term project: Fitness App
+
 API version 23 and over
+
 Test on physical device
 
 ## Introduction:
